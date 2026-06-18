@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSWORA Pre-Award Tools — UT College of Social Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --orange: #FF8200; --orange-dark: #C96000; --orange-pale: #FFF3E0;
+    --nsf: #1565C0; --nsf-dark: #0D47A1; --nsf-pale: #E3F2FD;
+    --gray-dark: #231F20; --gray: #58595B; --gray-mid: #909090;
+    --gray-light: #D1D3D4; --gray-pale: #F5F5F5; --gray-border: #E8E8E8;
+    --white: #ffffff; --green: #00746F; --green-pale: #E0F2F1;
+  }
+  html { font-size: 16px; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--gray-pale); color: var(--gray-dark); min-height: 100vh; }
+
+  /* Header */
+  .site-header { background: var(--gray-dark); }
+  .header-bar { height: 4px; background: var(--orange); }
+  .header-inner { max-width: 900px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-logo { width: 36px; height: 36px; background: var(--orange); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: white; flex-shrink: 0; }
+  .header-name { font-size: 14px; font-weight: 500; color: rgba(255,255,255,.9); line-height: 1.2; }
+  .header-sub  { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 2px; }
+  .header-contact { font-size: 12px; color: rgba(255,255,255,.5); }
+  .header-contact a { color: var(--orange); text-decoration: none; }
+  .header-contact a:hover { text-decoration: underline; }
+
+  /* Hero */
+  .hero { background: var(--white); border-bottom: 1px solid var(--gray-border); padding: 48px 24px 40px; text-align: center; }
+  .hero-inner { max-width: 600px; margin: 0 auto; }
+  .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--orange-dark); margin-bottom: 10px; }
+  .hero-title { font-size: 32px; font-weight: 600; color: var(--gray-dark); line-height: 1.2; margin-bottom: 14px; }
+  .hero-title span { color: var(--orange); }
+  .hero-desc { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 0; }
+
+  /* Main */
+  .main { max-width: 900px; margin: 0 auto; padding: 40px 24px 64px; }
+
+  /* Tool cards */
+  .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+  .tool-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,.07); transition: box-shadow .15s, transform .15s; text-decoration: none; display: flex; flex-direction: column; }
+  .tool-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); transform: translateY(-2px); }
+  .tool-card-accent { height: 5px; }
+  .tool-card-accent.nih { background: var(--orange); }
+  .tool-card-accent.nsf { background: var(--nsf); }
+  .tool-card-body { padding: 24px; flex: 1; }
+  .tool-card-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: white; margin-bottom: 16px; }
+  .tool-card-icon.nih { background: var(--orange); }
+  .tool-card-icon.nsf { background: var(--nsf); }
+  .tool-card-title { font-size: 17px; font-weight: 600; color: var(--gray-dark); margin-bottom: 8px; line-height: 1.3; }
+  .tool-card-desc  { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 16px; }
+  .tool-card-features { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  .feature { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--gray); }
+  .feature-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+  .feature-dot.nih { background: var(--orange); }
+  .feature-dot.nsf { background: var(--nsf); }
+  .tool-card-footer { padding: 16px 24px; border-top: 1px solid var(--gray-border); background: var(--gray-pale); }
+  .tool-btn { display: inline-flex; align-items: center; gap: 8px; padding: 9px 18px; font-size: 13px; font-family: inherit; font-weight: 600; border-radius: 8px; border: none; color: white; cursor: pointer; text-decoration: none; transition: opacity .12s; }
+  .tool-btn.nih { background: var(--orange); }
+  .tool-btn.nsf { background: var(--nsf); }
+  .tool-btn:hover { opacity: .88; }
+  .tool-btn svg { width: 14px; height: 14px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* How it works */
+  .section-title { font-size: 18px; font-weight: 600; color: var(--gray-dark); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--gray-border); }
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+  .step-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; padding: 20px 16px; text-align: center; }
+  .step-num { width: 32px; height: 32px; border-radius: 50%; background: var(--orange); color: white; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+  .step-title { font-size: 13px; font-weight: 600; color: var(--gray-dark); margin-bottom: 6px; }
+  .step-desc  { font-size: 12px; color: var(--gray); line-height: 1.5; }
+
+  /* Info box */
+  .info-box { background: var(--white); border: 1px solid var(--gray-border); border-left: 3px solid var(--orange); border-radius: 12px; padding: 20px 24px; margin-bottom: 32px; }
+  .info-box-title { font-size: 14px; font-weight: 600; color: var(--gray-dark); margin-bottom: 10px; }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .info-item { font-size: 13px; color: var(--gray); display: flex; align-items: flex-start; gap: 8px; }
+  .info-check { color: var(--green); font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+  /* Contact */
+  .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .contact-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; padding: 20px; }
+  .contact-role { font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 4px; }
+  .contact-name { font-size: 15px; font-weight: 600; color: var(--gray-dark); margin-bottom: 2px; }
+  .contact-title-line { font-size: 12px; color: var(--gray-mid); margin-bottom: 8px; }
+  .contact-email { font-size: 13px; font-weight: 500; color: var(--orange-dark); text-decoration: none; }
+  .contact-email:hover { text-decoration: underline; }
+
+  /* Footer */
+  .site-footer { background: var(--gray-dark); padding: 24px; text-align: center; }
+  .footer-inner { max-width: 900px; margin: 0 auto; }
+  .footer-text { font-size: 12px; color: rgba(255,255,255,.4); line-height: 1.7; }
+  .footer-text a { color: var(--orange); text-decoration: none; }
+  .footer-text a:hover { text-decoration: underline; }
+  .footer-bar { width: 40px; height: 2px; background: var(--orange); margin: 0 auto 16px; border-radius: 1px; }
+
+  @media (max-width: 640px) {
+    .tools-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .contact-row { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-bar"></div>
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logo">UT</div>
+      <div>
+        <div class="header-name">College of Social Work — Pre-Award Tools</div>
+        <div class="header-sub">Office of Research Administration (CSWORA) · University of Tennessee, Knoxville</div>
+      </div>
+    </div>
+    <div class="header-contact">Questions? <a href="mailto:cswora@utk.edu">cswora@utk.edu</a></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">CSWORA Pre-Award Support</div>
+    <h1 class="hero-title">Proposal Document <span>Checklists</span></h1>
+    <p class="hero-desc">Answer a few questions about your proposal and get a personalized list of every document you need — with your exact internal deadline dates calculated automatically.</p>
+  </div>
+</section>
+
+<main class="main">
+
+  <!-- Tool Cards -->
+  <div class="tools-grid">
+
+    <!-- NIH Card -->
+    <a class="tool-card" href="CSWORA_NIH_Document_Checklist_Wizard.html">
+      <div class="tool-card-accent nih"></div>
+      <div class="tool-card-body">
+        <div class="tool-card-icon nih">NIH</div>
+        <div class="tool-card-title">NIH Proposal Document Checklist</div>
+        <div class="tool-card-desc">For R01, R21, R03, and other NIH mechanisms. Covers human subjects, clinical trials, genomic data, subrecipients, and more.</div>
+        <div class="tool-card-features">
+          <div class="feature"><div class="feature-dot nih"></div>Calculates your 5-day &amp; 10-day DRA deadlines</div>
+          <div class="feature"><div class="feature-dot nih"></div>All 4 human subjects documents when applicable</div>
+          <div class="feature"><div class="feature-dot nih"></div>Resource Sharing Plan, DMS Plan, model organisms</div>
+          <div class="feature"><div class="feature-dot nih"></div>PI vs. CSWORA ownership on every document</div>
+        </div>
+      </div>
+      <div class="tool-card-footer">
+        <span class="tool-btn nih">
+          Open NIH Checklist
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- NSF Card -->
+    <a class="tool-card" href="CSWORA_NSF_Document_Checklist_Wizard.html">
+      <div class="tool-card-accent nsf"></div>
+      <div class="tool-card-body">
+        <div class="tool-card-icon nsf">NSF</div>
+        <div class="tool-card-title">NSF Proposal Document Checklist</div>
+        <div class="tool-card-desc">For Standard Research, CAREER, RAPID/EAGER, and collaborative proposals. Based on PAPPG 24-1 and Policy Notice Supplement 2 (Jan 2026).</div>
+        <div class="tool-card-features">
+          <div class="feature"><div class="feature-dot nsf"></div>Calculates your 5-day &amp; 10-day DRA deadlines</div>
+          <div class="feature"><div class="feature-dot nsf"></div>COA forms, Synergistic Activities (now separate)</div>
+          <div class="feature"><div class="feature-dot nsf"></div>Simultaneous collaborative &amp; subaward logic</div>
+          <div class="feature"><div class="feature-dot nsf"></div>NSF-specific warnings (no letters of support, etc.)</div>
+        </div>
+      </div>
+      <div class="tool-card-footer">
+        <span class="tool-btn nsf">
+          Open NSF Checklist
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- How it works -->
+  <h2 class="section-title">How it works</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-title">Enter your deadline</div>
+      <div class="step-desc">Type in your sponsor deadline date and choose the 10-day or 5-day track.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-title">Answer questions</div>
+      <div class="step-desc">~15 questions about your proposal type, compliance needs, and personnel.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-title">Get your checklist</div>
+      <div class="step-desc">A personalized list of required documents — with exact due dates on each one.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-title">Print or share</div>
+      <div class="step-desc">Print a clean copy or share this page link with your co-investigators.</div>
+    </div>
+  </div>
+
+  <!-- What's included -->
+  <div class="info-box">
+    <div class="info-box-title">What the tools calculate</div>
+    <div class="info-grid">
+      <div class="info-item"><span class="info-check">✓</span>All internal CSWORA / DRA deadline dates from your sponsor deadline</div>
+      <div class="info-item"><span class="info-check">✓</span>Accounts for weekends and all 11 federal holidays</div>
+      <div class="info-item"><span class="info-check">✓</span>Which documents you need vs. which are not applicable</div>
+      <div class="info-item"><span class="info-check">✓</span>Who is responsible for each document — PI vs. CSWORA</div>
+      <div class="info-item"><span class="info-check">✓</span>Due date for every document based on your track selection</div>
+      <div class="info-item"><span class="info-check">✓</span>Sponsor-specific warnings (NSF: no letters of support, etc.)</div>
+    </div>
+  </div>
+
+  <!-- Contacts -->
+  <h2 class="section-title">Contact CSWORA</h2>
+  <div class="contact-row">
+    <div class="contact-card">
+      <div class="contact-role">Pre-Award Grants Management</div>
+      <div class="contact-name">Shauna Cook</div>
+      <div class="contact-title-line">Grants Manager, CSWORA</div>
+      <a class="contact-email" href="mailto:cooks@utk.edu">cooks@utk.edu</a>
+    </div>
+    <div class="contact-card">
+      <div class="contact-role">College Associate Dean for Research</div>
+      <div class="contact-name">Amanda Harvey-Panfil</div>
+      <div class="contact-title-line">Associate Dean for Research, UTK CSW</div>
+      <a class="contact-email" href="mailto:aharveyp@utk.edu">aharveyp@utk.edu</a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-bar"></div>
+    <div class="footer-text">
+      University of Tennessee, Knoxville &nbsp;·&nbsp; College of Social Work &nbsp;·&nbsp; Office of Research Administration (CSWORA)<br>
+      NIH checklist based on NIH Forms H/I requirements. NSF checklist based on <a href="https://www.nsf.gov/policies/pappg/24-1" target="_blank">PAPPG 24-1</a> and Supplement 2 (Jan 2026).<br>
+      Always check your specific FOA or solicitation for additional requirements. Contact <a href="mailto:proposals@utk.edu">proposals@utk.edu</a> for DRA questions.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
