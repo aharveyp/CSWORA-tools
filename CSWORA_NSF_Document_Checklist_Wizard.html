@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSF Proposal Document Checklist — CSWORA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --nsf: #1565C0; --nsf-dark: #0D47A1; --nsf-pale: #E3F2FD; --nsf-mid: #64B5F6;
+    --orange: #FF8200; --orange-dark: #C96000; --orange-pale: #FFF3E0; --orange-mid: #FFB366;
+    --gray-dark: #231F20; --gray: #58595B; --gray-mid: #808285; --gray-light: #D1D3D4;
+    --gray-pale: #F5F5F5; --gray-border: #E8E8E8; --white: #ffffff;
+    --red: #BF0000; --red-pale: #FFF0F0;
+    --green: #00746F; --green-pale: #E0F2F1; --green-dark: #004D40;
+    --amber: #E65100; --amber-pale: #FFF8E1;
+  }
+  html { font-size: 16px; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--gray-pale); color: var(--gray-dark); min-height: 100vh; line-height: 1.6; }
+
+  .site-header { background: var(--gray-dark); position: sticky; top: 0; z-index: 100; }
+  .header-nsf-bar { height: 4px; background: var(--nsf); }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; max-width: 900px; margin: 0 auto; }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-logo { width: 32px; height: 32px; background: var(--nsf); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: white; flex-shrink: 0; }
+  .header-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9); line-height: 1.2; }
+  .header-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+  .header-badge { font-size: 11px; padding: 3px 10px; background: rgba(21,101,192,0.3); color: var(--nsf-mid); border-radius: 20px; font-weight: 500; }
+
+  .page { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
+  .page-title-block { margin-bottom: 28px; }
+  .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--nsf-dark); margin-bottom: 6px; }
+  .page-title { font-size: 26px; font-weight: 600; color: var(--gray-dark); line-height: 1.25; margin-bottom: 8px; }
+  .page-desc { font-size: 14px; color: var(--gray); line-height: 1.6; max-width: 560px; }
+  .pappg-note { font-size: 12px; color: var(--gray-mid); margin-top: 8px; padding: 8px 12px; background: var(--nsf-pale); border-left: 2px solid var(--nsf); border-radius: 4px; }
+
+  .progress-wrap { margin-bottom: 24px; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--gray-mid); margin-bottom: 6px; }
+  .progress-track { height: 3px; background: var(--gray-border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--nsf); border-radius: 2px; transition: width .35s ease; }
+
+  .q-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.07); }
+  .q-section-label { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--nsf-dark); background: var(--nsf-pale); padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; }
+  .q-text { font-size: 16px; font-weight: 500; color: var(--gray-dark); margin-bottom: 6px; line-height: 1.45; }
+  .q-hint { font-size: 13px; color: var(--gray-mid); margin-bottom: 16px; line-height: 1.55; background: var(--gray-pale); padding: 8px 12px; border-radius: 6px; border-left: 2px solid var(--gray-light); }
+  .options-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt-btn { padding: 8px 18px; font-size: 13px; font-family: inherit; font-weight: 500; border-radius: 8px; border: 1.5px solid var(--gray-border); background: var(--white); color: var(--gray-dark); cursor: pointer; transition: all .12s; line-height: 1; }
+  .opt-btn:hover { border-color: var(--nsf-mid); background: var(--nsf-pale); color: var(--nsf-dark); }
+  .opt-btn.selected { border-color: var(--nsf); background: var(--nsf); color: white; }
+  .opt-btn:focus-visible { outline: 2px solid var(--nsf); outline-offset: 2px; }
+
+  .date-input-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .date-input { padding: 10px 14px; font-size: 15px; font-family: inherit; border-radius: 8px; border: 1.5px solid var(--gray-border); background: var(--white); color: var(--gray-dark); width: 100%; max-width: 260px; transition: border-color .12s; }
+  .date-input:focus { outline: none; border-color: var(--nsf); }
+  .date-preview { font-size: 13px; color: var(--green-dark); font-weight: 500; padding: 6px 10px; background: var(--green-pale); border-radius: 6px; display: inline-block; }
+
+  .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .btn-back { display: flex; align-items: center; gap: 6px; padding: 9px 16px; font-size: 13px; font-family: inherit; font-weight: 500; border-radius: 8px; border: 1.5px solid var(--gray-border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .12s; }
+  .btn-back:hover { background: var(--gray-pale); }
+  .btn-back:disabled { opacity: .3; cursor: default; }
+  .btn-next { display: flex; align-items: center; gap: 6px; padding: 9px 20px; font-size: 13px; font-family: inherit; font-weight: 600; border-radius: 8px; border: none; background: var(--nsf); color: white; cursor: pointer; transition: all .12s; }
+  .btn-next:hover { background: var(--nsf-dark); }
+  .btn-next:disabled { opacity: .35; cursor: default; pointer-events: none; }
+
+  /* Timeline */
+  .timeline-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.07); overflow: hidden; }
+  .timeline-header { background: var(--gray-dark); padding: 14px 20px; }
+  .timeline-header-title { font-size: 13px; font-weight: 600; color: white; margin-bottom: 2px; }
+  .timeline-header-sub { font-size: 11px; color: rgba(255,255,255,.45); }
+  .milestone-row { display: flex; align-items: stretch; border-bottom: 1px solid var(--gray-border); }
+  .milestone-row:last-child { border-bottom: none; }
+  .milestone-track { width: 4px; flex-shrink: 0; }
+  .milestone-content { flex: 1; padding: 12px 16px; }
+  .milestone-date-col { padding: 12px 16px 12px 0; text-align: right; flex-shrink: 0; min-width: 130px; }
+  .milestone-label { font-size: 13px; font-weight: 500; color: var(--gray-dark); margin-bottom: 2px; }
+  .milestone-note  { font-size: 11px; color: var(--gray-mid); line-height: 1.4; }
+  .milestone-date  { font-size: 13px; font-weight: 600; }
+  .milestone-day   { font-size: 10px; color: var(--gray-mid); margin-top: 1px; }
+  .milestone-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; margin-top: 4px; }
+  .track-0  { background: var(--green); }      .date-0  { color: var(--green-dark); }  .badge-0  { background: var(--green-pale);  color: var(--green-dark); }
+  .track-10 { background: var(--gray-light); } .date-10 { color: var(--gray-dark); }   .badge-10 { background: var(--gray-pale);   color: var(--gray); }
+  .track-5  { background: var(--nsf); }        .date-5  { color: var(--nsf-dark); }    .badge-5  { background: var(--nsf-pale);    color: var(--nsf-dark); }
+  .track-2  { background: var(--red); }        .date-2  { color: var(--red); }         .badge-2  { background: var(--red-pale);    color: var(--red); }
+
+  /* Results */
+  .results-header { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.07); display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .results-title { font-size: 20px; font-weight: 600; color: var(--gray-dark); margin-bottom: 3px; }
+  .results-sub { font-size: 13px; color: var(--gray); }
+  .results-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .results-stats { display: flex; gap: 8px; }
+  .stat-pill { text-align: center; padding: 8px 12px; border-radius: 8px; min-width: 64px; }
+  .stat-pill.req { background: var(--nsf-pale); }
+  .stat-pill.na  { background: var(--gray-pale); }
+  .stat-num { display: block; font-size: 20px; font-weight: 600; line-height: 1; margin-bottom: 2px; }
+  .stat-pill.req .stat-num { color: var(--nsf-dark); }
+  .stat-pill.na  .stat-num { color: var(--gray-mid); }
+  .stat-label { font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+  .stat-pill.req .stat-label { color: var(--nsf-dark); }
+  .stat-pill.na  .stat-label { color: var(--gray-mid); }
+
+  .chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .chip { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--gray-border); background: var(--white); color: var(--gray-mid); }
+  .chip.active { background: var(--nsf-pale); color: var(--nsf-dark); border-color: var(--nsf-mid); }
+
+  .warn-box { background: var(--amber-pale); border: 1px solid #FFCC80; border-left: 3px solid var(--amber); border-radius: 8px; padding: 10px 14px; margin-bottom: 10px; font-size: 12px; color: var(--amber); line-height: 1.55; }
+
+  .doc-section { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.07); }
+  .doc-section-head { display: flex; align-items: center; justify-content: space-between; padding: 11px 18px; background: var(--gray-pale); border-bottom: 1px solid var(--gray-border); cursor: pointer; user-select: none; }
+  .doc-section-head:hover { background: var(--gray-border); }
+  .doc-section-name { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gray); }
+  .doc-section-meta { display: flex; align-items: center; gap: 8px; }
+  .section-req-count { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: var(--nsf-pale); color: var(--nsf-dark); }
+  .section-chevron { font-size: 12px; color: var(--gray-mid); transition: transform .2s; }
+  .doc-section.collapsed .section-chevron { transform: rotate(-90deg); }
+  .doc-section.collapsed .doc-section-body { display: none; }
+  .section-note { font-size: 12px; color: var(--gray-mid); padding: 10px 18px 0; font-style: italic; }
+
+  .doc-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--gray-border); }
+  .doc-item:last-child { border-bottom: none; }
+  .doc-item.is-na { opacity: .42; }
+  .doc-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 11px; font-weight: 700; }
+  .doc-icon.req { background: var(--nsf-pale); color: var(--nsf-dark); }
+  .doc-icon.na  { background: var(--gray-pale); color: var(--gray-mid); }
+  .doc-content { flex: 1; min-width: 0; }
+  .doc-name-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-bottom: 3px; }
+  .doc-name { font-size: 13px; font-weight: 500; color: var(--gray-dark); }
+  .doc-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; }
+  .doc-badge.req { background: var(--nsf-pale); color: var(--nsf-dark); }
+  .doc-badge.na  { background: var(--gray-pale); color: var(--gray-mid); text-decoration: line-through; }
+  .doc-owner { font-size: 10px; font-weight: 500; padding: 2px 6px; border-radius: 10px; }
+  .doc-owner.pi     { background: #E8F5E9; color: #1B5E20; }
+  .doc-owner.cswora { background: var(--green-pale); color: var(--green); }
+  .doc-owner.both   { background: var(--gray-pale); color: var(--gray); }
+  .doc-due { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; background: var(--nsf-pale); color: var(--nsf-dark); }
+  .doc-detail { font-size: 12px; color: var(--gray); line-height: 1.5; }
+  .doc-detail.na-note { font-style: italic; color: var(--gray-mid); }
+
+  .callout-box { background: var(--white); border: 1px solid var(--gray-border); border-left: 3px solid var(--nsf); border-radius: 12px; padding: 14px 18px; margin-top: 16px; font-size: 13px; color: var(--gray); line-height: 1.6; }
+  .callout-box strong { color: var(--gray-dark); }
+  .callout-box a { color: var(--nsf-dark); text-decoration: none; }
+  .callout-box a:hover { text-decoration: underline; }
+
+  .btn-action { display: flex; align-items: center; gap: 6px; padding: 7px 13px; font-size: 12px; font-family: inherit; font-weight: 500; border-radius: 8px; border: 1.5px solid var(--gray-border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .12s; }
+  .btn-action:hover { background: var(--gray-pale); }
+
+  .icon { display: inline-block; width: 15px; height: 15px; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  @media print {
+    .site-header, .btn-action, .progress-wrap, .q-card, .nav-row, .chips-row { display: none !important; }
+    body { background: white; }
+    .page { padding: 0; max-width: 100%; }
+    .doc-section.collapsed .doc-section-body { display: block !important; }
+    .doc-item.is-na { display: none; }
+    .section-chevron { display: none; }
+  }
+  @media (max-width: 600px) {
+    .header-inner { padding: 10px 16px; }
+    .page { padding: 20px 14px 48px; }
+    .q-card { padding: 18px 16px; }
+    .results-header { flex-direction: column; }
+    .milestone-date-col { min-width: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-nsf-bar"></div>
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logo">UT</div>
+      <div>
+        <div class="header-name">College of Social Work</div>
+        <div class="header-sub">Office of Research Administration (CSWORA)</div>
+      </div>
+    </div>
+    <div class="header-badge">NSF Proposal Tool</div>
+  </div>
+</header>
+
+<main class="page" role="main">
+  <div class="page-title-block">
+    <div class="page-eyebrow">Pre-award support</div>
+    <h1 class="page-title">NSF Proposal Document Checklist</h1>
+    <p class="page-desc">Answer a few questions and we'll generate your personalized NSF document list with exact internal deadline dates calculated from your sponsor deadline.</p>
+    <div class="pappg-note">Based on NSF PAPPG 24-1 and Policy Notice Supplement 2 (effective January 22, 2026). Always check your specific solicitation for additional requirements.</div>
+  </div>
+  <div id="root"></div>
+</main>
+
+<script>
+// ── Business Day Calculator ────────────────────────────────────────────────────
+function getHolidays(year) {
+  const obs = d => { const w=d.getDay(); if(w===0) d.setDate(d.getDate()+1); else if(w===6) d.setDate(d.getDate()-1); return d; };
+  const nth = (y,m,wd,n) => { const d=new Date(y,m,1); let c=0; while(true){if(d.getDay()===wd){c++;if(c===n)return new Date(d);} d.setDate(d.getDate()+1);} };
+  const last = (y,m,wd) => { const d=new Date(y,m+1,0); while(d.getDay()!==wd) d.setDate(d.getDate()-1); return d; };
+  const h = [
+    obs(new Date(year,0,1)), nth(year,0,1,3), nth(year,1,1,3), last(year,4,1),
+    obs(new Date(year,5,19)), obs(new Date(year,6,4)), nth(year,8,1,1),
+    nth(year,9,1,2), obs(new Date(year,10,11)), nth(year,10,4,4), obs(new Date(year,11,25))
+  ];
+  return new Set(h.map(d => d.toDateString()));
+}
+
+function subtractBizDays(date, days) {
+  const yrs = new Set([date.getFullYear()-1, date.getFullYear(), date.getFullYear()+1]);
+  const holidays = new Set([...[...yrs].flatMap(y => [...getHolidays(y)])]);
+  let d = new Date(date), count = 0;
+  while (count < days) {
+    d.setDate(d.getDate()-1);
+    if (d.getDay()!==0 && d.getDay()!==6 && !holidays.has(d.toDateString())) count++;
+  }
+  return d;
+}
+
+function fmtFull(d) { return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'}); }
+function fmtShort(d) { return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}); }
+function fmtMedium(d) { return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+
+function calcMilestones(sd) {
+  return {
+    d10:  subtractBizDays(sd, 10),
+    d5:   subtractBizDays(sd, 5),
+    d2:   subtractBizDays(sd, 2),
+    dFin: subtractBizDays(sd, 6),  // 8AM day before 5-day
+    sponsor: sd
+  };
+}
+
+// ── Questions ─────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  { id:'deadline', section:'Proposal basics', type:'date',
+    text:'What is the NSF sponsor submission deadline?',
+    hint:'The deadline listed in the NSF solicitation or Research.gov. All internal CSWORA and DRA milestones will be calculated from this date.' },
+  { id:'track', section:'Proposal basics', type:'choice',
+    options:['10-Day Track (recommended)','5-Day Track (hard minimum)'],
+    text:'Which internal deadline track will you use?',
+    hint:'The 10-day track gives CSWORA and DRA more time to review. The 5-day track is the hard minimum per UT DRA policy.' },
+  { id:'proposal_type', section:'Proposal basics', type:'choice',
+    options:['Standard Research','CAREER','RAPID / EAGER','Planning','Renewal / Continuing','Other'],
+    text:'What type of NSF proposal is this?',
+    hint:'CAREER and RAPID/EAGER have different page limits and additional required components.' },
+  { id:'submission_type', section:'Proposal basics', type:'choice',
+    options:['New','Resubmission (previously declined)','Renewal of existing award'],
+    text:'New proposal, resubmission, or renewal?',
+    hint:'Resubmissions must be substantively revised. NSF does not require a formal Introduction document, but the proposal must address prior review comments.' },
+  { id:'collaborative', section:'Proposal structure', type:'choice',
+    options:['No — single organization','Yes — simultaneous submission (linked)','Yes — single submission with subawards'],
+    text:'Is this a collaborative proposal involving multiple organizations?',
+    hint:'NSF simultaneous collaborative proposals are linked in Research.gov — each organization submits independently with its own budget and justification.' },
+  { id:'is_lead', section:'Proposal structure', type:'yesno',
+    showIf: a => a.collaborative && a.collaborative !== 'No — single organization',
+    text:'Is UTK the lead organization?',
+    hint:'Non-lead organizations still need their own budget, budget justification, facilities statement, biosketches, and current and pending support.' },
+  { id:'prior_support', section:'Proposal content', type:'yesno',
+    text:'Has any PI or Co-PI received prior NSF support in the last 5 years?',
+    hint:'If yes, Results from Prior NSF Support must be included in the Project Description (up to 5 pages, counting toward the page limit).' },
+  { id:'human_subjects', section:'Human subjects', type:'choice',
+    options:['Yes — research involving human subjects','Yes — educational/outreach with participant assessment','No human subjects'],
+    text:'Does this project involve human subjects?',
+    hint:'Check the Human Subjects box on the Cover Sheet. IRB approval is not required at submission — it may be pending. For educational/outreach activities where you assess participants, the box must also be checked.' },
+  { id:'vertebrate_animals', section:'Compliance', type:'yesno',
+    text:'Does this project involve vertebrate animals?' },
+  { id:'hazardous', section:'Compliance', type:'yesno',
+    text:'Does this project involve hazardous materials, select agents, or DURC?',
+    hint:'Select agents require checking the "Potential Life Sciences Dual Use Research of Concern" box on the Cover Sheet.' },
+  { id:'endangered', section:'Compliance', type:'yesno',
+    text:'Does this project involve or impact endangered species?' },
+  { id:'international', section:'Compliance', type:'yesno',
+    text:'Does this project involve foreign institutions or significant international activities?',
+    hint:'Includes subawards to foreign institutions, field work outside the US, or involvement of foreign nationals where export controls may apply.' },
+  { id:'off_campus', section:'Compliance', type:'yesno',
+    text:'Will all or part of this project be performed off-campus or away from UTK?',
+    hint:'If yes, an off-campus/off-site research safety plan must be developed and kept on file at UTK before submission — not submitted to NSF.' },
+  { id:'postdocs', section:'Personnel', type:'yesno',
+    text:'Will the project support postdoctoral scholars or graduate students with substantial NSF funding?',
+    hint:'If yes, a Mentoring Plan (1 page) must be included in the proposal, and Individual Development Plans (IDPs) must be maintained on file — IDPs are not submitted to NSF.' },
+  { id:'over2mo', section:'Personnel', type:'yesno',
+    text:'Will any senior/key personnel be compensated for more than 2 months per year from this award?',
+    hint:'NSF allows a maximum of 2 months/year salary from any single NSF award. Anything over must be disclosed in the budget and justified.' },
+  { id:'letters_collab', section:'Proposal content', type:'yesno',
+    text:'Does this project involve significant collaborative arrangements requiring letters of collaboration?',
+    hint:'NSF only allows letters of collaboration (not support/recommendation) unless specifically required by the solicitation. The letter must use NSF\'s standard format.' },
+  { id:'tribal', section:'Proposal content', type:'yesno',
+    text:'Does this project potentially impact Tribal Nation resources, lands, or interests?',
+    hint:'If yes, Tribal Nation approval documentation may be required. Contact CSWORA early — this requires advance coordination.' }
+];
+
+let answers = {}, step = 0, done = false;
+
+function visibleQs() {
+  return QUESTIONS.filter(q => !q.showIf || q.showIf(answers));
+}
+
+const I = {
+  check:   '<polyline points="20 6 9 17 4 12"/>',
+  x:       '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  al:      '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+  ar:      '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+  refresh: '<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>',
+  print:   '<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>',
+  chevron: '<polyline points="6 9 12 15 18 9"/>',
+  calendar:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'
+};
+const svg = p => `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+
+function ob(o) {
+  const m={pi:'PI',cswora:'CSWORA',both:'PI + CSWORA'};
+  return `<span class="doc-owner ${o}">${m[o]||o}</span>`;
+}
+
+// ── NSF Timeline ──────────────────────────────────────────────────────────────
+function buildTimeline(sd, track) {
+  const m = calcMilestones(sd);
+  const use10 = track.includes('10');
+  const tm = {
+    '0':  { cls:'track-0',  dcls:'date-0',  bcls:'badge-0'  },
+    '10': { cls:'track-10', dcls:'date-10', bcls:'badge-10' },
+    '5':  { cls:'track-5',  dcls:'date-5',  bcls:'badge-5'  },
+    '2':  { cls:'track-2',  dcls:'date-2',  bcls:'badge-2'  },
+  };
+
+  const milestones = [
+    { label:'Notify CSWORA — contact as soon as possible', note:'Ideally 8+ weeks before the deadline. Contact cswora@utk.edu immediately.', t:'0', date:null, badge:'As soon as possible' },
+    { label:'Subrecipient & subaward docs to CSWORA', note:'Subaward SOW, budget, budget justification, and personnel docs from each subaward institution SPO.', t:use10?'10':'5', date:use10?m.d10:m.d5 },
+    { label:'All non-technical docs to CSWORA', note:'Biosketches (SciENcv), Current & Pending (SciENcv), COA forms, Facilities, Budget Justification, letters of collaboration, DMS Plan.', t:use10?'10':'5', date:use10?m.d10:m.d5 },
+    { label:'Draft Project Description to CSWORA', note:'CSWORA reviews for formatting compliance (page limits, font, margins, no URLs in body text).', t:use10?'10':'5', date:use10?m.d10:m.d5 },
+    { label:'FINAL Project Description to CSWORA by 8:00 AM', note:'Email final Project Description, Project Summary, and References Cited to CSWORA by 8AM for PDF conversion and upload.', t:'5', date:m.dFin, badge:'8:00 AM' },
+    { label:'⚠  DRA 5-Day Hard Deadline — fully approved', note:'CSWORA manages all of Cayuse. All documents final. No PI-initiated changes after this date.', t:'5', date:m.d5, badge:'Hard deadline' },
+    { label:'DRA review feedback (~2 business days)', note:'DRA coordinator contacts PI, CSWORA & Tiffany Harmon with their review timeline.', t:'2', date:null, badge:'~2 business days after DRA deadline' },
+    { label:'Final DRA-requested revisions due', note:'Any revisions DRA requests must be returned by this date.', t:'2', date:m.d2 },
+    { label:'🏁  NSF Submission Deadline — DRA submits', note:'DRA submits via Research.gov by 5:00 PM local time. Be available by phone and email.', t:'0', date:m.sponsor, badge:'5:00 PM local' }
+  ];
+
+  const rows = milestones.map(ms => {
+    const t = tm[ms.t];
+    const ds = ms.date ? fmtMedium(ms.date) : '';
+    const dy = ms.date ? ms.date.toLocaleDateString('en-US',{weekday:'long'}) : '';
+    return `<div class="milestone-row">
+      <div class="milestone-track ${t.cls}"></div>
+      <div class="milestone-content">
+        <div class="milestone-label">${ms.label}</div>
+        <div class="milestone-note">${ms.note}</div>
+        ${ms.badge?`<span class="milestone-badge ${t.bcls}">${ms.badge}</span>`:''}
+      </div>
+      <div class="milestone-date-col">
+        ${ds?`<div class="milestone-date ${t.dcls}">${ds}</div><div class="milestone-day">${dy}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  return `<div class="timeline-card">
+    <div class="timeline-header">
+      <div class="timeline-header-title">${svg(I.calendar)} Internal Deadline Timeline</div>
+      <div class="timeline-header-sub">Sponsor deadline: ${fmtFull(sd)} &nbsp;·&nbsp; ${use10?'10-Day track (recommended)':'5-Day track (hard minimum)'}</div>
+    </div>
+    <div>${rows}</div>
+  </div>`;
+}
+
+// ── NSF Doc List ──────────────────────────────────────────────────────────────
+function buildDocs(sd, track) {
+  const a = answers;
+  const use10   = track.includes('10');
+  const m       = sd ? calcMilestones(sd) : null;
+  const pt      = a.proposal_type || 'Standard Research';
+  const isCAREER = pt === 'CAREER';
+  const isRapidEager = pt === 'RAPID / EAGER';
+  const pdLimit = isCAREER ? 15 : isRapidEager ? 8 : 15;
+  const isResub  = a.submission_type === 'Resubmission (previously declined)';
+  const isRenewal = a.submission_type === 'Renewal of existing award';
+  const collab   = a.collaborative || 'No — single organization';
+  const isCollab = collab !== 'No — single organization';
+  const isSimult = collab === 'Yes — simultaneous submission (linked)';
+  const hasSub   = collab === 'Yes — single submission with subawards';
+  const isNonLead = isCollab && a.is_lead === 'No';
+  const hasPriorSupport = a.prior_support === 'Yes';
+  const hsType   = a.human_subjects || 'No human subjects';
+  const hasHS    = hsType !== 'No human subjects';
+  const hasAnimals = a.vertebrate_animals === 'Yes';
+  const hasHazard  = a.hazardous === 'Yes';
+  const hasEnd     = a.endangered === 'Yes';
+  const hasIntl    = a.international === 'Yes';
+  const offCampus  = a.off_campus === 'Yes';
+  const hasPostdocs = a.postdocs === 'Yes';
+  const over2mo    = a.over2mo === 'Yes';
+  const hasCollabLetters = a.letters_collab === 'Yes';
+  const hasTribal  = a.tribal === 'Yes';
+
+  const dl = (phase) => {
+    if (!m) return '';
+    const target = use10 ? m.d10 : m.d5;
+    if (phase==='nontechnical') return `Due ${fmtShort(target)}`;
+    if (phase==='tech-draft')   return `Draft ${fmtShort(target)}`;
+    if (phase==='tech-final')   return `Final 8AM ${fmtShort(m.dFin)}`;
+    if (phase==='dra5')         return `By ${fmtShort(m.d5)}`;
+    return '';
+  };
+
+  return [
+    {
+      title:'Cover sheet & administrative (CSWORA completes)',
+      note:'CSWORA sets up and completes all of these in Research.gov. Review for accuracy.',
+      items:[
+        { name:'NSF Cover Sheet', owner:'cswora', req:true, due:'dra5', detail:'CSWORA completes. Proposal type, title, program, PI info, performance dates, and all compliance checkboxes (human subjects, animals, hazardous materials, international, off-campus). Any unchecked boxes are treated as "No."' },
+        { name:'Proposal Budget (all years)', owner:'cswora', req:true, due:'nontechnical', detail:'One budget per year. CSWORA builds with PI input. Max 2 months/yr salary per senior person from any single NSF award.' + (over2mo?' ⚠ Compensation exceeding 2 months must be disclosed and justified in the Budget Justification.':'') },
+        { name:'Budget Justification (max 5 pages)', owner:'cswora', req:true, due:'nontechnical', detail:'Every line item must be documented and justified. Max 5 pages per organization. CSWORA drafts; PI reviews and approves.' },
+        { name:'Subaward budget & budget justification', owner:'cswora', req:hasSub, na:!hasSub, naNote:'Not required — no subawards', due:'nontechnical', detail:'Each subaward needs its own budget and 5-page budget justification. CSWORA coordinates with subaward institution SPOs.' },
+        { name:'Non-lead collaborative proposal submission', owner:'cswora', req:isSimult&&isNonLead, na:!(isSimult&&isNonLead), naNote:isSimult?'Only required if UTK is non-lead':'Not applicable', due:'dra5', detail:'Generate temporary proposal ID in Research.gov and provide to the lead organization for linking before submission.' }
+      ]
+    },
+    {
+      title:'Project content (PI-authored)',
+      note:'Technical documents due to CSWORA by the agreed internal deadline. NSF strictly enforces formatting — 1-inch margins, 11pt+ font, ≤6 lines/vertical inch, no URLs in body text.',
+      items:[
+        { name:'Project Summary (1 page — 3 required headings)', owner:'pi', req:true, due:'nontechnical', detail:'1-page limit. Must include three headings on their own line: Overview, Intellectual Merit, and Broader Impacts. No URLs permitted. Failure to include these headings can result in return without review.' },
+        { name:`Project Description (${pdLimit}-page limit)`, owner:'pi', req:true, due:'tech-final', detail:`${pdLimit}-page limit for ${pt}. No URLs in the body. Must address both Intellectual Merit and Broader Impacts.${hasPriorSupport?' Results from Prior NSF Support required here (up to 5 pages, within the page limit).':''}` },
+        { name:'References Cited', owner:'pi', req:true, due:'tech-final', detail:'No page limit. Must include all authors in sequence, article title, journal, volume, pages, year. Cannot convey additional content beyond what is in the Project Description.' },
+        { name:'Results from Prior NSF Support (within Project Description)', owner:'pi', req:hasPriorSupport, na:!hasPriorSupport, naNote:'Not required — no prior NSF support in last 5 years', due:'tech-final', detail:'Up to 5 pages within the Project Description (counts toward page limit). Required for each PI/Co-PI with an active or recently ended NSF award. Cover Intellectual Merit and Broader Impacts of prior work under separate headings.' }
+      ]
+    },
+    {
+      title:'Senior/key personnel documents (via SciENcv)',
+      note:'All generated through SciENcv — not Word or PDF. Every senior/key person must have an NSF ID active in Research.gov.',
+      items:[
+        { name:'Biographical Sketch — PI (SciENcv, 3-page limit)', owner:'pi', req:true, due:'nontechnical', detail:'3-page limit. Must be generated from SciENcv on or after December 2, 2025. Signature must be dated within the past 12 months of submission.' },
+        { name:'Biographical Sketches — all Co-PIs & senior personnel', owner:'pi', req:true, due:'nontechnical', detail:'3-page limit per person. Same SciENcv requirements. Collect early — these take time.' },
+        { name:'Synergistic Activities — PI and all senior personnel (SciENcv, 1 page)', owner:'pi', req:true, due:'nontechnical', detail:'Now a SEPARATE document from the Biosketch (changed in PAPPG 24-1). 1-page limit per person. Up to 5 examples of broader impact of professional activities.' },
+        { name:'Current and Pending (Other) Support — PI (SciENcv)', owner:'pi', req:true, due:'nontechnical', detail:'Must include ALL current and pending support from any source including internal funds and in-kind contributions. Include the proposed project as pending. Provide a brief statement of objectives for each listed project. Do not include gifts or start-up packages.' },
+        { name:'Current and Pending Support — all Co-PIs & senior personnel', owner:'pi', req:true, due:'nontechnical', detail:'Same SciENcv format. Required for every senior/key person. Send them a firm internal deadline.' },
+        { name:'Collaborators and Other Affiliations (COA) — all senior personnel', owner:'pi', req:true, due:'nontechnical', detail:'Use the NSF COA template (nsf.gov/bfa/dias/policy/coa.jsp). Lists advisors, co-authors (past 48 months), and current collaborators. NSF uses this to manage reviewer conflicts of interest.' }
+      ]
+    },
+    {
+      title:'Facilities & resources',
+      items:[
+        { name:'Facilities, Equipment and Other Resources', owner:'pi', req:true, due:'nontechnical', detail:'Narrative description only — no quantifiable financial information. Describe internal and external physical and personnel resources. In-kind contributions for the proposed project must be listed here, not in Current & Pending Support. If no relevant facilities exist, a statement to that effect must still be uploaded.' }
+      ]
+    },
+    {
+      title:'Data management',
+      items:[
+        { name:'Data Management and Sharing Plan (DMSP, max 2 pages)', owner:'pi', req:true, due:'nontechnical', detail:'Required for ALL NSF proposals. Max 2 pages. For simultaneous collaborative proposals or proposals with subawards, only ONE combined DMSP is needed (lead organization includes it). Check NSF directorate-specific DMSP requirements. As of Jan 22, 2026: scientific datasets underlying publications must be made publicly available per the DMSP.' }
+      ]
+    },
+    {
+      title:'Special components',
+      items:[
+        { name:'CAREER Education and Outreach Plan', owner:'pi', req:isCAREER, na:!isCAREER, naNote:'Not required — not a CAREER proposal', due:'tech-final', detail:'Required for all CAREER proposals. Describes the education and outreach component integrated with the research plan.' },
+        { name:'Mentoring Plan (1 page)', owner:'pi', req:hasPostdocs, na:!hasPostdocs, naNote:'Not required — no postdoctoral scholars or graduate students with substantial NSF support', due:'nontechnical', detail:'1-page limit. Describes mentoring activities, professional development, and career guidance for postdoctoral scholars and graduate students.' },
+        { name:'Individual Development Plans (IDPs)', owner:'pi', req:hasPostdocs, na:!hasPostdocs, naNote:'Not required — no postdocs or graduate students', due:'nontechnical', detail:'NOT submitted to NSF — must be created and maintained on file for each postdoc/graduate student with substantial NSF support.' },
+        { name:'Letters of Collaboration', owner:'pi', req:hasCollabLetters, na:!hasCollabLetters, naNote:'Not required — no significant collaborative arrangements identified', due:'nontechnical', detail:'Use ONLY the NSF approved format: "If the proposal submitted by Dr. [name] entitled [title] is selected for funding by NSF, it is my intent to collaborate and/or commit resources as detailed in the Project Description or the Facilities section." Letters of recommendation or support are NOT permitted.' },
+        { name:'Off-Campus / Off-Site Research Safety Plan', owner:'pi', req:offCampus, na:!offCampus, naNote:'Not required — all work on UTK campus', due:'dra5', detail:'NOT submitted to NSF — must be developed before submission and kept on file at UTK. Documents safety assessments and institutional oversight for off-campus work.' },
+        { name:'Tribal Nation Approval Documentation', owner:'pi', req:hasTribal, na:!hasTribal, naNote:'Not required — no Tribal Nation impact', due:'nontechnical', detail:'Required when the project may impact Tribal Nation resources, lands, or interests. Contact CSWORA early — advance coordination required.' },
+        { name:'List of Suggested / Excluded Reviewers', owner:'pi', req:false, na:false, due:'dra5', detail:'Optional. Uploaded as a single-copy document in Research.gov. PI may suggest reviewers or identify conflicts.' }
+      ]
+    },
+    {
+      title:'Human subjects & compliance',
+      note: hasHS ? 'Check the Human Subjects box on the Cover Sheet. IRB approval may be pending at submission.' : 'Human subjects section not applicable to this proposal.',
+      items:[
+        { name:'Human Subjects section / IRB Documentation', owner:'pi', req:hasHS, na:!hasHS, naNote:'Not required — no human subjects', due:'nontechnical', detail: hsType==='Yes — educational/outreach with participant assessment' ? 'Check Human Subjects box for activities involving participant assessment. IRB determination required.' : 'Check Human Subjects box. Provide IRB approval status. Approval may be pending. Must be obtained before any human subjects work begins.' },
+        { name:'Vertebrate Animals section', owner:'pi', req:hasAnimals, na:!hasAnimals, naNote:'Not required — no vertebrate animals', due:'nontechnical', detail:'Check Vertebrate Animals box. Provide: species/numbers, justification, veterinary care, pain minimization, euthanasia. IACUC approval may be pending.' },
+        { name:'Hazardous Materials / DURC Documentation', owner:'pi', req:hasHazard, na:!hasHazard, naNote:'Not required — no hazardous materials or select agents', due:'nontechnical', detail:'Check relevant Cover Sheet boxes. For select agents, check "Potential Life Sciences Dual Use Research of Concern." Additional biosafety protocols may be required at award.' },
+        { name:'Endangered Species Documentation', owner:'pi', req:hasEnd, na:!hasEnd, naNote:'Not required — no endangered species involvement', due:'nontechnical', detail:'Check Endangered Species box. Document compliance with Endangered Species Act and any required federal or state permits.' },
+        { name:'International Activities Documentation', owner:'pi', req:hasIntl, na:!hasIntl, naNote:'Not required — no significant international activities', due:'nontechnical', detail:'Enter country names on Cover Sheet. Describe international activities in Project Description or Facilities section. Contact CSWORA — export control review may be needed.' }
+      ]
+    }
+  ];
+}
+
+function countDocs(secs) {
+  let req=0, na=0;
+  secs.forEach(s=>s.items.forEach(i=>{if(i.req)req++;else if(i.na)na++;}));
+  return {req,na};
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────────
+function render() {
+  const root = document.getElementById('root');
+  const vqs = visibleQs();
+  const total = vqs.length;
+
+  if (done) {
+    const sd    = answers.deadline ? new Date(answers.deadline+'T12:00:00') : null;
+    const track = answers.track || '5-Day Track (hard minimum)';
+    const secs  = buildDocs(sd, track);
+    const {req,na} = countDocs(secs);
+    const a = answers;
+    const m = sd ? calcMilestones(sd) : null;
+    const use10 = track.includes('10');
+
+    const chips = [
+      {label:a.proposal_type||'Standard Research',active:true},
+      {label:a.submission_type||'New',active:['Resubmission (previously declined)','Renewal of existing award'].includes(a.submission_type||'')},
+      {label:a.collaborative==='No — single organization'||!a.collaborative?'Single org':a.collaborative.includes('simultaneous')?'Simultaneous collab':'Subawards',active:a.collaborative&&a.collaborative!=='No — single organization'},
+      {label:a.prior_support==='Yes'?'Prior NSF support':'No prior support',active:a.prior_support==='Yes'},
+      {label:a.human_subjects==='No human subjects'||!a.human_subjects?'No human subjects':'Human subjects',active:a.human_subjects&&a.human_subjects!=='No human subjects'},
+      {label:track.includes('10')?'10-Day track':'5-Day track',active:true},
+    ].filter(Boolean);
+
+    const warns = [];
+    if (a.submission_type==='Resubmission (previously declined)') warns.push('Resubmissions must be substantively revised — NSF will return proposals not meaningfully different from the prior declined submission.');
+    if (a.prior_support==='Yes') warns.push('Results from Prior NSF Support required in your Project Description, counting toward the page limit.');
+    if (a.over2mo==='Yes') warns.push('Senior personnel compensation exceeding 2 months/year must be disclosed in the budget and justified.');
+    if (a.off_campus==='Yes') warns.push('An off-campus/off-site research safety plan must be developed and kept on file at UTK before submission — not submitted to NSF.');
+    if (a.postdocs==='Yes') warns.push('Individual Development Plans (IDPs) for postdocs and graduate students must be maintained on file — not submitted to NSF.');
+
+    root.innerHTML = `
+      <div class="results-header">
+        <div>
+          <div class="results-title">Your NSF document checklist</div>
+          <div class="results-sub">${a.proposal_type||'Standard Research'} · ${a.submission_type||'New'} · ${sd?'Deadline '+fmtMedium(sd):'No deadline entered'}</div>
+        </div>
+        <div class="results-actions">
+          <div class="results-stats">
+            <div class="stat-pill req"><span class="stat-num">${req}</span><span class="stat-label">Required</span></div>
+            <div class="stat-pill na"><span class="stat-num">${na}</span><span class="stat-label">Not needed</span></div>
+          </div>
+          <button class="btn-action" onclick="window.print()">${svg(I.print)} Print</button>
+          <button class="btn-action" onclick="restart()">${svg(I.refresh)} Start over</button>
+        </div>
+      </div>
+      <div class="chips-row">${chips.map(c=>`<span class="chip ${c.active?'active':''}">${c.label}</span>`).join('')}</div>
+      ${warns.map(w=>`<div class="warn-box">${w}</div>`).join('')}
+      ${sd ? buildTimeline(sd, track) : ''}
+      <div id="doc-sections">
+        ${secs.map((sec,si)=>{
+          const rc=sec.items.filter(i=>i.req).length;
+          return `
+            <div class="doc-section" id="sec-${si}">
+              <div class="doc-section-head" onclick="toggleSec(${si})" tabindex="0" role="button" aria-expanded="true">
+                <span class="doc-section-name">${sec.title}</span>
+                <div class="doc-section-meta">
+                  ${rc?`<span class="section-req-count">${rc} required</span>`:''}
+                  <span class="section-chevron">${svg(I.chevron)}</span>
+                </div>
+              </div>
+              <div class="doc-section-body">
+                ${sec.note?`<p class="section-note">${sec.note}</p>`:''}
+                ${sec.items.map(item=>{
+                  const dueStr = item.due && m ? (()=>{
+                    if(item.due==='nontechnical') return `Due ${fmtShort(use10?m.d10:m.d5)}`;
+                    if(item.due==='tech-draft')   return `Draft ${fmtShort(use10?m.d10:m.d5)}`;
+                    if(item.due==='tech-final')   return `Final 8AM ${fmtShort(m.dFin)}`;
+                    if(item.due==='dra5')         return `By ${fmtShort(m.d5)}`;
+                    return '';
+                  })() : '';
+                  return `<div class="doc-item ${item.na?'is-na':''}">
+                    <div class="doc-icon ${item.req?'req':'na'}">${item.req?svg(I.check):svg(I.x)}</div>
+                    <div class="doc-content">
+                      <div class="doc-name-row">
+                        <span class="doc-name">${item.name}</span>
+                        <span class="doc-badge ${item.req?'req':item.na?'na':''}">${item.req?'Required':item.na?'Not needed':'Optional'}</span>
+                        ${ob(item.owner)}
+                        ${item.req&&dueStr?`<span class="doc-due">${dueStr}</span>`:''}
+                      </div>
+                      <div class="doc-detail ${item.na?'na-note':''}">${item.req?(item.detail||''):(item.naNote||item.detail||'')}</div>
+                    </div>
+                  </div>`;
+                }).join('')}
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+      <div class="callout-box">
+        <strong>Important NSF reminders:</strong> Letters of support are NOT permitted — only letters of collaboration in the NSF standard format. Voluntary committed cost sharing is prohibited. Always check your specific solicitation — it may add requirements beyond PAPPG. Contact <a href="mailto:cswora@utk.edu">cswora@utk.edu</a> with questions or DRA at <a href="mailto:proposals@utk.edu">proposals@utk.edu</a>. For Research.gov help: NSF Help Desk <strong>1-800-381-1532</strong> or <a href="mailto:rgov@nsf.gov">rgov@nsf.gov</a>.
+      </div>`;
+    return;
+  }
+
+  const q = vqs[step];
+  if (!q) { done=true; render(); return; }
+  const progress = Math.round((step/total)*100);
+  const answered = answers[q.id];
+  const opts = q.type==='yesno'?['Yes','No']:(q.options||[]);
+
+  const inputHtml = q.type==='date' ? `
+    <div class="date-input-wrap">
+      <input type="date" class="date-input" id="date-inp"
+             value="${answered||''}"
+             min="${new Date().toISOString().split('T')[0]}"
+             onchange="chooseDate(this.value)">
+      ${answered?`<span class="date-preview">${svg(I.calendar)} ${fmtFull(new Date(answered+'T12:00:00'))}</span>`:''}
+    </div>
+  ` : `<div class="options-grid" id="opts" role="group" aria-labelledby="qt">
+    ${opts.map(opt=>`<button class="opt-btn${answered===opt?' selected':''}" onclick="choose('${opt.replace(/'/g,"\\'")}')">${opt}</button>`).join('')}
+  </div>`;
+
+  root.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-meta"><span>Question ${step+1} of ${total}</span><span>${progress}% complete</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-section-label">${q.section}</div>
+      <div class="q-text" id="qt">${q.text}</div>
+      ${q.hint?`<div class="q-hint">${q.hint}</div>`:''}
+      ${inputHtml}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()" ${step===0?'disabled':''} aria-label="Previous">${svg(I.al)} Back</button>
+      <button class="btn-next" id="nb" onclick="goNext()" ${answered?'':'disabled'}>
+        ${step===total-1?'See my checklist':'Next'} ${svg(I.ar)}
+      </button>
+    </div>`;
+}
+
+function choose(opt) {
+  answers[visibleQs()[step].id]=opt;
+  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.toggle('selected',b.textContent.trim()===opt));
+  const nb=document.getElementById('nb'); if(nb) nb.disabled=false;
+}
+function chooseDate(val) {
+  answers[visibleQs()[step].id]=val;
+  const nb=document.getElementById('nb'); if(nb) nb.disabled=!val;
+  render();
+}
+function goNext() {
+  const vqs=visibleQs();
+  if(step<vqs.length-1){step++;render();}
+  else{done=true;render();}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goBack() { if(step>0){step--;render();} window.scrollTo({top:0,behavior:'smooth'}); }
+function restart() { answers={}; step=0; done=false; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function toggleSec(i) { const el=document.getElementById('sec-'+i); if(el) el.classList.toggle('collapsed'); }
+document.addEventListener('keydown', e => {
+  if(!done && e.key==='Enter' && e.target.tagName!=='INPUT'){
+    const nb=document.getElementById('nb'); if(nb&&!nb.disabled) goNext();
+  }
+});
+render();
+</script>
+</body>
+</html>

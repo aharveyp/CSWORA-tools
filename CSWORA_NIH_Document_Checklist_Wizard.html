@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIH Proposal Document Checklist — CSWORA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --orange: #FF8200; --orange-dark: #C96000; --orange-pale: #FFF3E0; --orange-mid: #FFB366;
+    --gray-dark: #231F20; --gray: #58595B; --gray-mid: #808285; --gray-light: #D1D3D4;
+    --gray-pale: #F5F5F5; --gray-border: #E8E8E8; --white: #ffffff;
+    --red: #BF0000; --red-pale: #FFF0F0; --red-mid: #FFCDD2;
+    --green: #00746F; --green-pale: #E0F2F1; --green-dark: #004D40;
+    --blue: #005EB8; --blue-pale: #E8F0FB; --blue-mid: #90CAF9;
+    --amber: #E65100; --amber-pale: #FFF8E1;
+  }
+  html { font-size: 16px; }
+  body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--gray-pale); color: var(--gray-dark); min-height: 100vh; line-height: 1.6; }
+
+  .site-header { background: var(--gray-dark); position: sticky; top: 0; z-index: 100; }
+  .header-orange-bar { height: 4px; background: var(--orange); }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; max-width: 900px; margin: 0 auto; }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-logo { width: 32px; height: 32px; background: var(--orange); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: white; flex-shrink: 0; }
+  .header-name { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9); line-height: 1.2; }
+  .header-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+  .header-badge { font-size: 11px; padding: 3px 10px; background: rgba(255,130,0,0.2); color: var(--orange-mid); border-radius: 20px; font-weight: 500; }
+
+  .page { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
+  .page-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--orange-dark); margin-bottom: 6px; }
+  .page-title { font-size: 26px; font-weight: 600; color: var(--gray-dark); line-height: 1.25; margin-bottom: 8px; }
+  .page-desc { font-size: 14px; color: var(--gray); line-height: 1.6; max-width: 560px; }
+  .page-title-block { margin-bottom: 28px; }
+
+  .progress-wrap { margin-bottom: 24px; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--gray-mid); margin-bottom: 6px; }
+  .progress-track { height: 3px; background: var(--gray-border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--orange); border-radius: 2px; transition: width .35s ease; }
+
+  .q-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.07); }
+  .q-section-label { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--orange-dark); background: var(--orange-pale); padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; }
+  .q-text { font-size: 16px; font-weight: 500; color: var(--gray-dark); margin-bottom: 6px; line-height: 1.45; }
+  .q-hint { font-size: 13px; color: var(--gray-mid); margin-bottom: 16px; line-height: 1.55; background: var(--gray-pale); padding: 8px 12px; border-radius: 6px; border-left: 2px solid var(--gray-light); }
+  .options-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opt-btn { padding: 8px 18px; font-size: 13px; font-family: inherit; font-weight: 500; border-radius: 8px; border: 1.5px solid var(--gray-border); background: var(--white); color: var(--gray-dark); cursor: pointer; transition: all .12s; line-height: 1; }
+  .opt-btn:hover { border-color: var(--orange-mid); background: var(--orange-pale); color: var(--orange-dark); }
+  .opt-btn.selected { border-color: var(--orange); background: var(--orange); color: white; }
+  .opt-btn:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+  /* Date input */
+  .date-input-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .date-input { padding: 10px 14px; font-size: 15px; font-family: inherit; border-radius: 8px; border: 1.5px solid var(--gray-border); background: var(--white); color: var(--gray-dark); width: 100%; max-width: 260px; transition: border-color .12s; }
+  .date-input:focus { outline: none; border-color: var(--orange); }
+  .date-preview { font-size: 13px; color: var(--green-dark); font-weight: 500; padding: 6px 10px; background: var(--green-pale); border-radius: 6px; display: inline-block; }
+
+  .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .btn-back { display: flex; align-items: center; gap: 6px; padding: 9px 16px; font-size: 13px; font-family: inherit; font-weight: 500; border-radius: 8px; border: 1.5px solid var(--gray-border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .12s; }
+  .btn-back:hover { background: var(--gray-pale); }
+  .btn-back:disabled { opacity: .3; cursor: default; }
+  .btn-next { display: flex; align-items: center; gap: 6px; padding: 9px 20px; font-size: 13px; font-family: inherit; font-weight: 600; border-radius: 8px; border: none; background: var(--orange); color: white; cursor: pointer; transition: all .12s; }
+  .btn-next:hover { background: var(--orange-dark); }
+  .btn-next:disabled { opacity: .35; cursor: default; pointer-events: none; }
+
+  /* Timeline card */
+  .timeline-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; padding: 0; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.07); overflow: hidden; }
+  .timeline-header { background: var(--gray-dark); padding: 14px 20px; }
+  .timeline-header-title { font-size: 13px; font-weight: 600; color: white; margin-bottom: 2px; }
+  .timeline-header-sub { font-size: 11px; color: rgba(255,255,255,.5); }
+  .timeline-body { padding: 0; }
+  .milestone-row { display: flex; align-items: stretch; border-bottom: 1px solid var(--gray-border); }
+  .milestone-row:last-child { border-bottom: none; }
+  .milestone-track { width: 4px; flex-shrink: 0; }
+  .milestone-content { flex: 1; padding: 12px 16px; }
+  .milestone-date-col { padding: 12px 16px 12px 0; text-align: right; flex-shrink: 0; min-width: 130px; }
+  .milestone-label { font-size: 13px; font-weight: 500; color: var(--gray-dark); margin-bottom: 2px; }
+  .milestone-note { font-size: 11px; color: var(--gray-mid); line-height: 1.4; }
+  .milestone-date { font-size: 13px; font-weight: 600; }
+  .milestone-day { font-size: 10px; color: var(--gray-mid); margin-top: 1px; }
+  .milestone-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; margin-top: 4px; }
+
+  /* Track colors */
+  .track-10 { background: var(--gray-light); }
+  .track-5  { background: var(--orange); }
+  .track-2  { background: var(--red); }
+  .track-0  { background: var(--green); }
+  .date-10 { color: var(--gray-dark); }
+  .date-5  { color: var(--orange-dark); }
+  .date-2  { color: var(--red); }
+  .date-0  { color: var(--green-dark); }
+  .badge-10 { background: var(--gray-pale); color: var(--gray); }
+  .badge-5  { background: var(--orange-pale); color: var(--orange-dark); }
+  .badge-2  { background: var(--red-pale); color: var(--red); }
+  .badge-0  { background: var(--green-pale); color: var(--green-dark); }
+
+  .two-track { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .two-track .track-half { padding: 10px 14px; }
+  .two-track .track-half:first-child { border-right: 1px solid var(--gray-border); }
+  .track-half-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+  .track-half-date { font-size: 13px; font-weight: 600; }
+  .track-half-day  { font-size: 10px; margin-top: 1px; color: var(--gray-mid); }
+
+  /* Results */
+  .results-header { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.07); display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .results-title { font-size: 20px; font-weight: 600; color: var(--gray-dark); margin-bottom: 3px; }
+  .results-sub { font-size: 13px; color: var(--gray); }
+  .results-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .results-stats { display: flex; gap: 8px; }
+  .stat-pill { text-align: center; padding: 8px 12px; border-radius: 8px; min-width: 64px; }
+  .stat-pill.req { background: var(--orange-pale); }
+  .stat-pill.na  { background: var(--gray-pale); }
+  .stat-num { display: block; font-size: 20px; font-weight: 600; line-height: 1; margin-bottom: 2px; }
+  .stat-pill.req .stat-num { color: var(--orange-dark); }
+  .stat-pill.na  .stat-num { color: var(--gray-mid); }
+  .stat-label { font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+  .stat-pill.req .stat-label { color: var(--orange-dark); }
+  .stat-pill.na  .stat-label { color: var(--gray-mid); }
+
+  .chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .chip { font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--gray-border); background: var(--white); color: var(--gray-mid); }
+  .chip.active { background: var(--orange-pale); color: var(--orange-dark); border-color: var(--orange-mid); }
+
+  .doc-section { background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,.07); }
+  .doc-section-head { display: flex; align-items: center; justify-content: space-between; padding: 11px 18px; background: var(--gray-pale); border-bottom: 1px solid var(--gray-border); cursor: pointer; user-select: none; }
+  .doc-section-head:hover { background: var(--gray-border); }
+  .doc-section-name { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gray); }
+  .doc-section-meta { display: flex; align-items: center; gap: 8px; }
+  .section-req-count { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: var(--orange-pale); color: var(--orange-dark); }
+  .section-chevron { font-size: 12px; color: var(--gray-mid); transition: transform .2s; }
+  .doc-section.collapsed .section-chevron { transform: rotate(-90deg); }
+  .doc-section.collapsed .doc-section-body { display: none; }
+  .section-note { font-size: 12px; color: var(--gray-mid); padding: 10px 18px 0; font-style: italic; }
+
+  .doc-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--gray-border); }
+  .doc-item:last-child { border-bottom: none; }
+  .doc-item.is-na { opacity: .42; }
+  .doc-icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 11px; font-weight: 700; }
+  .doc-icon.req { background: var(--orange-pale); color: var(--orange-dark); }
+  .doc-icon.na  { background: var(--gray-pale); color: var(--gray-mid); }
+  .doc-content { flex: 1; min-width: 0; }
+  .doc-name-row { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; margin-bottom: 3px; }
+  .doc-name { font-size: 13px; font-weight: 500; color: var(--gray-dark); }
+  .doc-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; }
+  .doc-badge.req { background: var(--orange-pale); color: var(--orange-dark); }
+  .doc-badge.na  { background: var(--gray-pale); color: var(--gray-mid); text-decoration: line-through; }
+  .doc-owner { font-size: 10px; font-weight: 500; padding: 2px 6px; border-radius: 10px; }
+  .doc-owner.pi     { background: var(--blue-pale); color: var(--blue); }
+  .doc-owner.cswora { background: var(--green-pale); color: var(--green); }
+  .doc-owner.both   { background: var(--gray-pale); color: var(--gray); }
+  .doc-due { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; background: var(--orange-pale); color: var(--orange-dark); }
+  .doc-detail { font-size: 12px; color: var(--gray); line-height: 1.5; }
+  .doc-detail.na-note { font-style: italic; color: var(--gray-mid); }
+
+  .callout-box { background: var(--white); border: 1px solid var(--gray-border); border-left: 3px solid var(--orange); border-radius: 12px; padding: 14px 18px; margin-top: 16px; font-size: 13px; color: var(--gray); line-height: 1.6; }
+  .callout-box strong { color: var(--gray-dark); }
+  .callout-box a { color: var(--orange-dark); text-decoration: none; }
+  .callout-box a:hover { text-decoration: underline; }
+
+  .btn-action { display: flex; align-items: center; gap: 6px; padding: 7px 13px; font-size: 12px; font-family: inherit; font-weight: 500; border-radius: 8px; border: 1.5px solid var(--gray-border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .12s; }
+  .btn-action:hover { background: var(--gray-pale); }
+
+  .icon { display: inline-block; width: 15px; height: 15px; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  @media print {
+    .site-header, .btn-action, .progress-wrap, .q-card, .nav-row, .chips-row { display: none !important; }
+    body { background: white; }
+    .page { padding: 0; max-width: 100%; }
+    .doc-section.collapsed .doc-section-body { display: block !important; }
+    .doc-item.is-na { display: none; }
+    .section-chevron { display: none; }
+    .milestone-row { page-break-inside: avoid; }
+  }
+  @media (max-width: 600px) {
+    .header-inner { padding: 10px 16px; }
+    .page { padding: 20px 14px 48px; }
+    .q-card { padding: 18px 16px; }
+    .results-header { flex-direction: column; }
+    .two-track { grid-template-columns: 1fr; }
+    .two-track .track-half:first-child { border-right: none; border-bottom: 1px solid var(--gray-border); }
+    .milestone-date-col { min-width: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-orange-bar"></div>
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="header-logo">UT</div>
+      <div>
+        <div class="header-name">College of Social Work</div>
+        <div class="header-sub">Office of Research Administration (CSWORA)</div>
+      </div>
+    </div>
+    <div class="header-badge">NIH Proposal Tool</div>
+  </div>
+</header>
+
+<main class="page" role="main">
+  <div class="page-title-block">
+    <div class="page-eyebrow">Pre-award support</div>
+    <h1 class="page-title">NIH Proposal Document Checklist</h1>
+    <p class="page-desc">Answer a few questions about your proposal and we'll generate a personalized document list with your exact internal deadline dates.</p>
+  </div>
+  <div id="root"></div>
+</main>
+
+<script>
+// ── Federal Holiday Calculator ────────────────────────────────────────────────
+function getHolidays(year) {
+  const h = [];
+  const obs = d => { const w = d.getDay(); if (w===0) d.setDate(d.getDate()+1); else if (w===6) d.setDate(d.getDate()-1); return d; };
+  const nth = (y,m,wd,n) => { const d=new Date(y,m,1); let c=0; while(true){if(d.getDay()===wd){c++;if(c===n)return new Date(d);} d.setDate(d.getDate()+1);} };
+  const last = (y,m,wd) => { const d=new Date(y,m+1,0); while(d.getDay()!==wd) d.setDate(d.getDate()-1); return d; };
+  h.push(obs(new Date(year,0,1)));   // New Year's
+  h.push(nth(year,0,1,3));           // MLK Day
+  h.push(nth(year,1,1,3));           // Presidents' Day
+  h.push(last(year,4,1));            // Memorial Day
+  h.push(obs(new Date(year,5,19)));  // Juneteenth
+  h.push(obs(new Date(year,6,4)));   // Independence Day
+  h.push(nth(year,8,1,1));           // Labor Day
+  h.push(nth(year,9,1,2));           // Columbus Day
+  h.push(obs(new Date(year,10,11))); // Veterans Day
+  h.push(nth(year,10,4,4));          // Thanksgiving
+  h.push(obs(new Date(year,11,25))); // Christmas
+  return new Set(h.map(d => d.toDateString()));
+}
+
+function subtractBizDays(date, days) {
+  const years = new Set([date.getFullYear()-1, date.getFullYear(), date.getFullYear()+1]);
+  const holidays = new Set([...[...years].flatMap(y => [...getHolidays(y)])]);
+  let d = new Date(date); let count = 0;
+  while (count < days) {
+    d.setDate(d.getDate()-1);
+    if (d.getDay()!==0 && d.getDay()!==6 && !holidays.has(d.toDateString())) count++;
+  }
+  return d;
+}
+
+function fmtFull(d) {
+  return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+}
+function fmtShort(d) {
+  return d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+}
+function fmtMedium(d) {
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+}
+
+function calcMilestones(sponsorDate) {
+  const d10   = subtractBizDays(sponsorDate, 10);
+  const d5    = subtractBizDays(sponsorDate, 5);
+  const d2    = subtractBizDays(sponsorDate, 2);
+  const dFin  = subtractBizDays(sponsorDate, 6); // 8AM day before 5-day
+  return { d10, d5, d2, dFin, sponsor: sponsorDate };
+}
+
+// ── Questions ─────────────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    id: 'deadline', section: 'Proposal basics',
+    text: 'What is the sponsor submission deadline?',
+    hint: 'This is the NIH deadline date listed in the FOA (e.g., June 5, 2026). All your internal CSWORA and DRA deadlines will be calculated from this date.',
+    type: 'date'
+  },
+  {
+    id: 'track', section: 'Proposal basics',
+    text: 'Which internal deadline track will you use?',
+    hint: 'The 10-day track gives CSWORA and DRA more time to review and is strongly recommended. The 5-day track is the hard minimum per UT DRA policy — proposals missing this deadline will not be submitted.',
+    type: 'choice',
+    options: ['10-Day Track (recommended)','5-Day Track (hard minimum)']
+  },
+  {
+    id: 'mechanism', section: 'Proposal basics',
+    text: 'What is the NIH submission mechanism?',
+    type: 'choice',
+    options: ['R01','R21','R03','R34','R61/R33','Other']
+  },
+  {
+    id: 'submission_type', section: 'Proposal basics',
+    text: 'New application, resubmission, renewal, or revision?',
+    type: 'choice',
+    options: ['New','Resubmission','Renewal','Revision']
+  },
+  {
+    id: 'direct_costs', section: 'Budget',
+    text: 'Will direct costs exceed $500,000 in any single budget year?',
+    hint: 'Over $500K/yr triggers a detailed (non-modular) budget and may require a Resource Sharing Plan.',
+    type: 'yesno'
+  },
+  {
+    id: 'human_subjects', section: 'Human subjects',
+    text: 'Does this project involve human subjects research?',
+    hint: 'Human subjects = living individuals from whom you collect data through interaction, intervention, or identifiable private information.',
+    type: 'choice',
+    options: ['Yes — non-exempt','Yes — exempt','No human subjects','Uncertain']
+  },
+  {
+    id: 'clinical_trial', section: 'Human subjects',
+    text: 'Does this project meet NIH\'s definition of a clinical trial?',
+    hint: 'Clinical trial = prospective study where human participants are assigned an intervention to evaluate its effect on health-related biomedical or behavioral outcomes. Many social work intervention studies qualify.',
+    type: 'yesno',
+    showIf: a => a.human_subjects && !['No human subjects','Uncertain'].includes(a.human_subjects)
+  },
+  {
+    id: 'vertebrate_animals', section: 'Compliance',
+    text: 'Does this project involve vertebrate animals?', type: 'yesno'
+  },
+  {
+    id: 'model_organisms', section: 'Compliance',
+    text: 'Will this project generate model organisms?',
+    hint: 'Triggers a Model Organism Sharing Plan regardless of budget size.',
+    type: 'yesno'
+  },
+  {
+    id: 'genomic_data', section: 'Compliance',
+    text: 'Will this project generate large-scale human genomic data?',
+    hint: 'GWAS, whole-genome sequencing, whole-exome, SNP arrays, genome-scale expression.',
+    type: 'yesno'
+  },
+  {
+    id: 'multi_pi', section: 'Personnel',
+    text: 'Is this a Multiple PD/PI application?', type: 'yesno'
+  },
+  {
+    id: 'subrecipients', section: 'Personnel',
+    text: 'Are there subrecipients at other institutions?',
+    hint: 'Their institution\'s SPO must submit commitment docs directly to CSWORA — notify them immediately.',
+    type: 'yesno'
+  },
+  {
+    id: 'select_agents', section: 'Compliance',
+    text: 'Does this project involve select agents or toxins?', type: 'yesno'
+  },
+  {
+    id: 'key_resources', section: 'Compliance',
+    text: 'Will this project use key biological and/or chemical resources?',
+    hint: 'Cell lines, antibodies, reagents, animals, clinical samples integral to the research.',
+    type: 'yesno'
+  },
+  {
+    id: 'foreign', section: 'Compliance',
+    text: 'Does this project involve foreign institutions or a significant foreign component?', type: 'yesno'
+  }
+];
+
+let answers = {}, step = 0, done = false;
+
+function visibleQs() {
+  return QUESTIONS.filter(q => !q.showIf || q.showIf(answers));
+}
+
+// ── SVG icons ─────────────────────────────────────────────────────────────────
+const I = {
+  check:   '<polyline points="20 6 9 17 4 12"/>',
+  x:       '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+  al:      '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+  ar:      '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>',
+  refresh: '<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>',
+  print:   '<polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>',
+  chevron: '<polyline points="6 9 12 15 18 9"/>',
+  calendar:'<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'
+};
+const svg = p => `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+
+function ob(o) {
+  const m = {pi:'PI',cswora:'CSWORA',both:'PI + CSWORA'};
+  return `<span class="doc-owner ${o}">${m[o]||o}</span>`;
+}
+
+// ── Timeline block ─────────────────────────────────────────────────────────────
+function buildTimeline(sponsorDate, track) {
+  const m = calcMilestones(sponsorDate);
+  const use10 = track === '10-Day Track (recommended)';
+  const activeDate = use10 ? m.d10 : m.d5;
+
+  const milestones = [
+    {
+      label: 'Notify CSWORA — contact as soon as possible',
+      note: 'Ideally 8+ weeks before the deadline. Contact cswora@utk.edu immediately.',
+      track: '0', date: null, badge: 'As soon as possible'
+    },
+    {
+      label: 'Subrecipient & consultant docs to CSWORA',
+      note: use10 ? '10-business-day target' : '5-business-day requirement',
+      track: use10 ? '10' : '5',
+      date: use10 ? m.d10 : m.d5
+    },
+    {
+      label: 'All non-technical docs to CSWORA',
+      note: use10 ? '10-business-day target — Biosketches, Other Support, Facilities, Equipment, DMS Plan, letters of support, etc.' : '5-business-day requirement',
+      track: use10 ? '10' : '5',
+      date: use10 ? m.d10 : m.d5
+    },
+    {
+      label: 'Draft technical docs to CSWORA',
+      note: use10 ? 'Specific Aims, Research Strategy, Bibliography — drafts for CSWORA compliance review' : '5-business-day requirement',
+      track: use10 ? '10' : '5',
+      date: use10 ? m.d10 : m.d5
+    },
+    {
+      label: 'FINAL technical docs to CSWORA by 8:00 AM',
+      note: 'Email FINAL Specific Aims, Research Strategy & Bibliography to CSWORA by 8AM — allows time for PDF conversion and portal upload before the DRA deadline.',
+      track: '5',
+      date: m.dFin,
+      badge: '8:00 AM'
+    },
+    {
+      label: '⚠  DRA 5-Day Hard Deadline — Cayuse fully approved',
+      note: 'CSWORA manages all of Cayuse. CSWORA targets routing complete by 5PM the day before so Tiffany Harmon and Amanda Harvey-Panfil can review. After this date: no PI-initiated changes to any document.',
+      track: '5',
+      date: m.d5,
+      badge: 'Hard deadline'
+    },
+    {
+      label: 'DRA review feedback provided (~2 days)',
+      note: 'A DRA coordinator contacts PI, CSWORA & Tiffany with their specific review timeline.',
+      track: '2',
+      date: null,
+      badge: '~2 business days after DRA deadline'
+    },
+    {
+      label: 'Final DRA-requested revisions due',
+      note: 'Any revisions DRA requests must be returned by this date.',
+      track: '2',
+      date: m.d2
+    },
+    {
+      label: '🏁  Sponsor Submission Deadline — DRA submits',
+      note: 'DRA submits on UTK\'s behalf by 5:00 PM. Be available by phone and email all day.',
+      track: '0',
+      date: m.sponsor,
+      badge: '5:00 PM'
+    }
+  ];
+
+  const trackMeta = {
+    '0':  { cls: 'track-0',  dcls: 'date-0',  bcls: 'badge-0'  },
+    '10': { cls: 'track-10', dcls: 'date-10', bcls: 'badge-10' },
+    '5':  { cls: 'track-5',  dcls: 'date-5',  bcls: 'badge-5'  },
+    '2':  { cls: 'track-2',  dcls: 'date-2',  bcls: 'badge-2'  },
+  };
+
+  const rows = milestones.map(ms => {
+    const tm = trackMeta[ms.track];
+    const dateStr = ms.date ? fmtMedium(ms.date) : '';
+    const dayStr  = ms.date ? ms.date.toLocaleDateString('en-US',{weekday:'long'}) : '';
+    return `
+      <div class="milestone-row">
+        <div class="milestone-track ${tm.cls}"></div>
+        <div class="milestone-content">
+          <div class="milestone-label">${ms.label}</div>
+          <div class="milestone-note">${ms.note}</div>
+          ${ms.badge ? `<span class="milestone-badge ${tm.bcls}">${ms.badge}</span>` : ''}
+        </div>
+        <div class="milestone-date-col">
+          ${dateStr ? `<div class="milestone-date ${tm.dcls}">${dateStr}</div><div class="milestone-day">${dayStr}</div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="timeline-card">
+      <div class="timeline-header">
+        <div class="timeline-header-title">${svg(I.calendar)} Internal Deadline Timeline</div>
+        <div class="timeline-header-sub">
+          Sponsor deadline: ${fmtFull(sponsorDate)} &nbsp;·&nbsp;
+          ${use10 ? '10-Day track (recommended)' : '5-Day track (hard minimum)'}
+        </div>
+      </div>
+      <div class="timeline-body">${rows}</div>
+    </div>
+  `;
+}
+
+// ── Document list builder ─────────────────────────────────────────────────────
+function buildDocs(sponsorDate, track) {
+  const a = answers;
+  const use10  = track === '10-Day Track (recommended)';
+  const m      = sponsorDate ? calcMilestones(sponsorDate) : null;
+  const mech   = a.mechanism || 'R01';
+  const pl     = {R01:12,R21:6,R03:6,R34:15,'R61/R33':12,Other:12}[mech]||12;
+  const hasHS  = !['No human subjects','Uncertain'].includes(a.human_subjects||'No human subjects');
+  const isExempt = a.human_subjects === 'Yes — exempt';
+  const isCT   = a.clinical_trial === 'Yes';
+  const over500 = a.direct_costs === 'Yes';
+  const hasAnimals = a.vertebrate_animals === 'Yes';
+  const hasModel   = a.model_organisms  === 'Yes';
+  const hasGenomic = a.genomic_data     === 'Yes';
+  const isMultiPI  = a.multi_pi         === 'Yes';
+  const hasSubs    = a.subrecipients    === 'Yes';
+  const hasSelect  = a.select_agents    === 'Yes';
+  const hasKeyRes  = a.key_resources    === 'Yes';
+  const hasForeign = a.foreign          === 'Yes';
+  const isResub    = ['Resubmission','Revision'].includes(a.submission_type||'');
+  const needRSP    = over500 || hasModel;
+
+  const dueLabel = (phase) => {
+    if (!m) return '';
+    if (phase === 'nontechnical') return `Due ${fmtShort(use10 ? m.d10 : m.d5)}`;
+    if (phase === 'technical-draft') return `Draft by ${fmtShort(use10 ? m.d10 : m.d5)}`;
+    if (phase === 'technical-final') return `FINAL by 8AM ${fmtShort(m.dFin)}`;
+    if (phase === 'dra5') return `By ${fmtShort(m.d5)}`;
+    return '';
+  };
+
+  return [
+    {
+      title: 'Cover & administrative (CSWORA completes)',
+      note: 'CSWORA sets up and completes all of these in ASSIST. Review for accuracy — you do not fill these out.',
+      items: [
+        { name:'SF 424 (R&R) Cover', owner:'cswora', req:true, due:'dra5', detail:'Auto-populates from UTK\'s profile in eRA Commons. CSWORA completes.' },
+        { name:'PHS 398 Cover Page Supplement', owner:'cswora', req:true, due:'dra5', detail:'Human subjects & clinical trial flags, program income, debarment certification.' },
+        { name:'R&R Other Project Information', owner:'cswora', req:true, due:'dra5', detail:'CSWORA completes yes/no compliance questions. PI documents are uploaded here.' },
+        { name:'Project/Performance Site Locations', owner:'cswora', req:true, due:'dra5', detail:'UTK and all off-campus/community sites.' },
+        { name:'R&R Senior/Key Person Profile', owner:'cswora', req:true, due:'dra5', detail:'Every named person needs a valid eRA Commons ID.' },
+        { name: over500 ? 'R&R Detailed Budget' : 'R&R Modular Budget', owner:'cswora', req:true, due:'nontechnical', detail: over500 ? 'Required — direct costs exceed $500K/yr. CSWORA builds with PI input.' : 'Modular budget (≤$249K direct costs/yr). CSWORA builds; PI reviews and approves.' },
+        { name:'Budget Justification', owner:'cswora', req:true, due:'nontechnical', detail:'CSWORA drafts; PI reviews and approves.' },
+        { name:'Personnel Justification', owner:'both', req:!over500, na:over500, naNote:'Not required — detailed budgets include full justification', due:'nontechnical', detail:'Required for modular budgets. PI provides role descriptions; CSWORA drafts.' }
+      ]
+    },
+    {
+      title: 'Project overview (PI-authored)',
+      note: 'Due to CSWORA by the 10-day target date.',
+      items: [
+        { name:'Project Summary / Abstract (30-line limit)', owner:'pi', req:true, due:'nontechnical', detail:'30 lines of text. Third person. No images or tables. Publicly visible if funded.' },
+        { name:'Project Narrative (2–3 sentences)', owner:'pi', req:true, due:'nontechnical', detail:'Strictly 2–3 sentences. Plain language. Public health relevance.' }
+      ]
+    },
+    {
+      title: 'Technical documents (PI-authored)',
+      note: 'Submit DRAFTS to CSWORA by the 10-day target. FINAL versions by 8AM the day before the 5-day DRA deadline.',
+      items: [
+        { name:'Specific Aims (1-page limit)', owner:'pi', req:true, due:'technical-final', detail:'1-page limit. Reviewed separately from Research Strategy — write it to stand alone.' },
+        { name:`Research Strategy (${pl}-page limit for ${mech})`, owner:'pi', req:true, due:'technical-final', detail:`${pl}-page limit. Significance, Innovation, Approach. CSWORA reviews drafts for compliance and formatting flags.` },
+        { name:'Bibliography & References Cited', owner:'pi', req:true, due:'technical-final', detail:'No page limit. No active hyperlinks or URLs.' },
+        { name:'Introduction to Application (1-page limit)', owner:'pi', req:isResub, na:!isResub, naNote:`Not required — ${a.submission_type||'new'} application`, due:'technical-final', detail:'Required for resubmissions and revisions. Responds to prior review critique. 1-page limit.' }
+      ]
+    },
+    {
+      title: 'Attachments & statements (PI-authored)',
+      note: 'Due to CSWORA by the 10-day target.',
+      items: [
+        { name:'Facilities & Other Resources', owner:'pi', req:true, due:'nontechnical', detail:'UTK CSW facilities and any partner/community sites. CSWORA provides UTK-specific language. No hyperlinks.' },
+        { name:'Equipment', owner:'pi', req:true, due:'nontechnical', detail:'List available equipment with location. No purchases needed — state so if applicable. No hyperlinks.' },
+        { name:'NIH Biosketch — PI (via SciENcv, 5-page limit)', owner:'pi', req:true, due:'nontechnical', detail:'Personal statement must be tailored to THIS application. Current SciENcv format required.' },
+        { name:'NIH Biosketches — all Co-Is & key personnel', owner:'pi', req:true, due:'nontechnical', detail:'5-page limit per person. Every person needs a valid eRA Commons ID in the Credential field.' },
+        { name:'Other Support / Current & Pending — PI (via SciENcv)', owner:'pi', req:true, due:'nontechnical', detail:'All active and pending support. Generated from SciENcv. Do not list in-kind unless FOA requires.' },
+        { name:'Other Support — all key personnel', owner:'pi', req:true, due:'nontechnical', detail:'Required for every named senior/key person.' },
+        { name:'Data Management & Sharing Plan (2-page max)', owner:'pi', req:true, due:'nontechnical', detail:'Required for ALL NIH applications. Not reviewed for scientific merit. Covers data types, standards, preservation, access, sharing timeline, and oversight.' },
+        { name:'Letters of Support', owner:'pi', req:true, due:'nontechnical', detail:'Official letterhead, signed. Collaborators, community partners, organizations providing data/participant access.' },
+        { name:'Multiple PD/PI Leadership Plan', owner:'pi', req:isMultiPI, na:!isMultiPI, naNote:'Not required — single PI', due:'nontechnical', detail:'Governance, roles, decision-making, conflict resolution between PIs.' },
+        { name:'Consortium / Contractual Arrangements', owner:'both', req:hasSubs, na:!hasSubs, naNote:'Not required — no subrecipients', due:'nontechnical', detail:'Nature and justification of each subrecipient relationship. Sub SPO must submit docs to CSWORA.' }
+      ]
+    },
+    {
+      title: 'Data sharing plans',
+      items: [
+        { name:'Genomic Data Sharing (GDS) Plan', owner:'pi', req:hasGenomic, na:!hasGenomic, naNote:'Not required — no large-scale genomic data', due:'nontechnical', detail:'Separate plan for large-scale human genomic data. Reviewed by program officer.' },
+        { name:'Resource Sharing Plan', owner:'pi', req:needRSP, na:!needRSP, naNote:'Not required — direct costs ≤$500K/yr and no model organisms', due:'nontechnical', detail:(over500?'Required: direct costs exceed $500K/yr. ':'')+(hasModel?'Required: project generates model organisms.':'') },
+        { name:'Model Organism Sharing Plan', owner:'pi', req:hasModel, na:!hasModel, naNote:'Not required — no model organisms', due:'nontechnical', detail:'Describe repository where organisms will be deposited.' }
+      ]
+    },
+    {
+      title: 'Human subjects documents',
+      note: hasHS ? (isExempt ? 'Check Human Subjects box on cover. Document exemption category.' : 'Non-exempt human subjects — all four protection documents required.') : 'Not applicable to this proposal.',
+      items: [
+        { name:'Human Subjects section', owner:'pi', req:hasHS, na:!hasHS, naNote:'Not required — no human subjects', due:'nontechnical', detail: isExempt ? 'Document the exemption category and basis.' : 'IRB approval status, inclusion plans, risks/protections, data safety monitoring.' },
+        { name:'Inclusion of Women and Minorities', owner:'pi', req:hasHS&&!isExempt, na:!hasHS||isExempt, naNote:!hasHS?'Not required — no human subjects':'Not required — exempt research', due:'nontechnical', detail:'Include Targeted/Planned Enrollment Table by sex/gender and race/ethnicity.' },
+        { name:'Inclusion of Individuals Across the Lifespan', owner:'pi', req:hasHS&&!isExempt, na:!hasHS||isExempt, naNote:!hasHS?'Not required — no human subjects':'Not required — exempt research', due:'nontechnical', detail:'Justify any age group exclusions.' },
+        { name:'Recruitment and Retention Plan', owner:'pi', req:hasHS&&!isExempt, na:!hasHS||isExempt, naNote:!hasHS?'Not required — no human subjects':'Not required — exempt research', due:'nontechnical', detail:'Recruitment strategies, timeline, outreach partners, retention procedures, compensation.' },
+        { name:'Protection of Human Subjects', owner:'pi', req:hasHS&&!isExempt, na:!hasHS||isExempt, naNote:!hasHS?'Not required — no human subjects':'Not required — exempt research', due:'nontechnical', detail:'Risks and minimization, consent process, data security, privacy protections, DSMB plan.' },
+        { name:'Human Subjects & Clinical Trials — Study Record', owner:'pi', req:isCT, na:!isCT, naNote:'Not required — not a clinical trial', due:'nontechnical', detail:'Full study record in ASSIST: design, population, intervention, outcomes, adverse event monitoring.' }
+      ]
+    },
+    {
+      title: 'Animals, biosafety & compliance',
+      items: [
+        { name:'Vertebrate Animals section', owner:'pi', req:hasAnimals, na:!hasAnimals, naNote:'Not required — no vertebrate animals', due:'nontechnical', detail:'Species, numbers, justification, pain minimization, euthanasia methods.' },
+        { name:'Select Agent Research section', owner:'pi', req:hasSelect, na:!hasSelect, naNote:'Not required — no select agents', due:'nontechnical', detail:'Registration, biosafety procedures, containment plan.' },
+        { name:'Authentication of Key Biological/Chemical Resources', owner:'pi', req:hasKeyRes, na:!hasKeyRes, naNote:'Not required — no key biological/chemical resources', due:'nontechnical', detail:'How cell lines, antibodies, reagents will be authenticated.' },
+        { name:'Foreign Justification', owner:'pi', req:hasForeign, na:!hasForeign, naNote:'Not required — no foreign components', due:'nontechnical', detail:'Why the foreign component is necessary and cannot be performed domestically.' }
+      ]
+    }
+  ];
+}
+
+function countDocs(secs) {
+  let req=0, na=0;
+  secs.forEach(s => s.items.forEach(i => { if(i.req) req++; else if(i.na) na++; }));
+  return {req,na};
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────────
+function render() {
+  const root = document.getElementById('root');
+  const vqs = visibleQs();
+  const total = vqs.length;
+
+  if (done) {
+    const sponsorDate = answers.deadline ? new Date(answers.deadline + 'T12:00:00') : null;
+    const track = answers.track || '5-Day Track (hard minimum)';
+    const secs = buildDocs(sponsorDate, track);
+    const {req,na} = countDocs(secs);
+    const a = answers;
+
+    const chips = [
+      {label: a.mechanism||'NIH', active:true},
+      {label: a.submission_type||'New', active: ['Resubmission','Revision'].includes(a.submission_type||'')},
+      {label: a.direct_costs==='Yes'?'>$500K/yr':'≤$500K/yr', active:a.direct_costs==='Yes'},
+      {label: ['No human subjects','Uncertain'].includes(a.human_subjects||'No human subjects') ? 'No human subjects' : a.human_subjects==='Yes — exempt'?'Exempt research':'Human subjects', active:!['No human subjects','Uncertain'].includes(a.human_subjects||'No human subjects')},
+      a.clinical_trial!==undefined?{label:a.clinical_trial==='Yes'?'Clinical trial':'Not a clinical trial',active:a.clinical_trial==='Yes'}:null,
+      {label:a.vertebrate_animals==='Yes'?'Vertebrate animals':'No animals',active:a.vertebrate_animals==='Yes'},
+      {label:a.multi_pi==='Yes'?'Multiple PI':'Single PI',active:a.multi_pi==='Yes'},
+      {label:a.subrecipients==='Yes'?'Subrecipients':'No subrecipients',active:a.subrecipients==='Yes'},
+      sponsorDate?{label: track.includes('10')? '10-Day track':'5-Day track', active:true}:null,
+    ].filter(Boolean);
+
+    root.innerHTML = `
+      <div class="results-header">
+        <div>
+          <div class="results-title">Your NIH document checklist</div>
+          <div class="results-sub">${a.mechanism||'NIH'} ${a.submission_type||'New'} · ${sponsorDate ? 'Deadline ' + fmtMedium(sponsorDate) : 'No deadline entered'}</div>
+        </div>
+        <div class="results-actions">
+          <div class="results-stats">
+            <div class="stat-pill req"><span class="stat-num">${req}</span><span class="stat-label">Required</span></div>
+            <div class="stat-pill na"><span class="stat-num">${na}</span><span class="stat-label">Not needed</span></div>
+          </div>
+          <button class="btn-action" onclick="window.print()">${svg(I.print)} Print</button>
+          <button class="btn-action" onclick="restart()">${svg(I.refresh)} Start over</button>
+        </div>
+      </div>
+      <div class="chips-row">${chips.map(c=>`<span class="chip ${c.active?'active':''}">${c.label}</span>`).join('')}</div>
+      ${sponsorDate ? buildTimeline(sponsorDate, track) : ''}
+      <div id="doc-sections">
+        ${secs.map((sec,si)=>{
+          const reqCount = sec.items.filter(i=>i.req).length;
+          const m = sponsorDate ? calcMilestones(sponsorDate) : null;
+          const use10 = track.includes('10');
+          return `
+            <div class="doc-section" id="sec-${si}">
+              <div class="doc-section-head" onclick="toggleSec(${si})" tabindex="0" role="button" aria-expanded="true">
+                <span class="doc-section-name">${sec.title}</span>
+                <div class="doc-section-meta">
+                  ${reqCount?`<span class="section-req-count">${reqCount} required</span>`:''}
+                  <span class="section-chevron">${svg(I.chevron)}</span>
+                </div>
+              </div>
+              <div class="doc-section-body">
+                ${sec.note?`<p class="section-note">${sec.note}</p>`:''}
+                ${sec.items.map(item=>{
+                  const dueStr = item.due && m ? (() => {
+                    if (item.due==='nontechnical') return `Due ${fmtShort(use10?m.d10:m.d5)}`;
+                    if (item.due==='technical-draft') return `Draft ${fmtShort(use10?m.d10:m.d5)}`;
+                    if (item.due==='technical-final') return `Final 8AM ${fmtShort(m.dFin)}`;
+                    if (item.due==='dra5') return `By ${fmtShort(m.d5)}`;
+                    return '';
+                  })() : '';
+                  return `
+                  <div class="doc-item ${item.na?'is-na':''}">
+                    <div class="doc-icon ${item.req?'req':'na'}">${item.req?svg(I.check):svg(I.x)}</div>
+                    <div class="doc-content">
+                      <div class="doc-name-row">
+                        <span class="doc-name">${item.name}</span>
+                        <span class="doc-badge ${item.req?'req':item.na?'na':''}">${item.req?'Required':item.na?'Not needed':'Optional'}</span>
+                        ${ob(item.owner)}
+                        ${item.req && dueStr ? `<span class="doc-due">${dueStr}</span>` : ''}
+                      </div>
+                      <div class="doc-detail ${item.na?'na-note':''}">${item.req?(item.detail||''):(item.naNote||item.detail||'')}</div>
+                    </div>
+                  </div>`; }).join('')}
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+      <div class="callout-box">
+        <strong>Questions?</strong> Contact CSWORA at <a href="mailto:cswora@utk.edu">cswora@utk.edu</a> or DRA at <a href="mailto:proposals@utk.edu">proposals@utk.edu</a>. For NIH system issues, call the NIH Help Desk: <strong>1-866-504-9552</strong>.
+      </div>
+    `;
+    return;
+  }
+
+  const q = vqs[step];
+  if (!q) { done=true; render(); return; }
+  const progress = Math.round((step/total)*100);
+  const answered = answers[q.id];
+  const opts = q.type==='yesno' ? ['Yes','No'] : (q.options||[]);
+
+  const inputHtml = q.type==='date' ? `
+    <div class="date-input-wrap">
+      <input type="date" class="date-input" id="date-inp"
+             value="${answered||''}"
+             min="${new Date().toISOString().split('T')[0]}"
+             onchange="chooseDate(this.value)">
+      ${answered ? `<span class="date-preview">${svg(I.calendar)} ${fmtFull(new Date(answered+'T12:00:00'))}</span>` : ''}
+    </div>
+  ` : `
+    <div class="options-grid" id="opts" role="group" aria-labelledby="qt">
+      ${opts.map(opt=>`<button class="opt-btn${answered===opt?' selected':''}" onclick="choose('${opt.replace(/'/g,"\\'")}')">${opt}</button>`).join('')}
+    </div>
+  `;
+
+  root.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-meta"><span>Question ${step+1} of ${total}</span><span>${progress}% complete</span></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-section-label">${q.section}</div>
+      <div class="q-text" id="qt">${q.text}</div>
+      ${q.hint?`<div class="q-hint">${q.hint}</div>`:''}
+      ${inputHtml}
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goBack()" ${step===0?'disabled':''} aria-label="Previous">${svg(I.al)} Back</button>
+      <button class="btn-next" id="nb" onclick="goNext()" ${answered?'':'disabled'}>
+        ${step===total-1?'See my checklist':'Next'} ${svg(I.ar)}
+      </button>
+    </div>
+  `;
+}
+
+function choose(opt) {
+  answers[visibleQs()[step].id] = opt;
+  document.querySelectorAll('.opt-btn').forEach(b => b.classList.toggle('selected', b.textContent.trim()===opt));
+  const nb=document.getElementById('nb'); if(nb) nb.disabled=false;
+}
+
+function chooseDate(val) {
+  answers[visibleQs()[step].id] = val;
+  const nb=document.getElementById('nb'); if(nb) nb.disabled=!val;
+  render();
+}
+
+function goNext() {
+  const vqs=visibleQs();
+  if(step<vqs.length-1){step++;render();}
+  else{done=true;render();}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goBack() {
+  if(step>0){step--;render();}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restart() {
+  answers={}; step=0; done=false; render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleSec(i) {
+  const el=document.getElementById('sec-'+i);
+  if(el) el.classList.toggle('collapsed');
+}
+
+document.addEventListener('keydown', e => {
+  if(!done && e.key==='Enter' && e.target.tagName!=='INPUT'){
+    const nb=document.getElementById('nb');
+    if(nb&&!nb.disabled) goNext();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
