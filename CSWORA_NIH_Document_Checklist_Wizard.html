@@ -182,6 +182,18 @@
     .two-track .track-half:first-child { border-right: none; border-bottom: 1px solid var(--gray-border); }
     .milestone-date-col { min-width: 100px; }
   }
+
+  /* Smartsheet submit button */
+  .btn-submit { display:flex; align-items:center; gap:7px; padding:10px 20px; font-size:13px; font-family:inherit; font-weight:600; border-radius:8px; border:none; color:white; cursor:pointer; transition:all .15s; text-decoration:none; }
+  .btn-submit.nih { background: var(--orange); }
+  .btn-submit.nih:hover { background: var(--orange-dark); }
+  .btn-submit.nsf { background: var(--nsf); }
+  .btn-submit.nsf:hover { background: var(--nsf-dark); }
+  .btn-submit svg { width:14px; height:14px; stroke:white; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+  .submit-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:20px; padding:16px 20px; background:var(--white); border:1px solid var(--gray-border); border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,.07); }
+  .submit-label { font-size:13px; color:var(--gray); flex:1; min-width:200px; }
+  .submit-label strong { color:var(--gray-dark); }
+
 </style>
 </head>
 <body>
@@ -272,7 +284,7 @@ const QUESTIONS = [
     text: 'Which internal deadline track will you use?',
     hint: 'The 10-day track gives CSWORA and DRA more time to review and is strongly recommended. The 5-day track is the hard minimum per UT DRA policy — proposals missing this deadline will not be submitted.',
     type: 'choice',
-    options: ['10-Day Track (recommended)','5-Day Track (hard minimum)']
+    options: ['10-Day Track (strongly recommended)','5-Day Track (hard minimum)']
   },
   {
     id: 'mechanism', section: 'Proposal basics',
@@ -329,7 +341,7 @@ const QUESTIONS = [
   {
     id: 'subrecipients', section: 'Personnel',
     text: 'Are there subrecipients at other institutions?',
-    hint: 'Their institution\'s SPO must submit commitment docs directly to CSWORA — notify them immediately.',
+    hint: 'CSWORA sends standard DRA commitment forms to subrecipients and consultants — ideally at least 3 weeks before the deadline. Their institution\'s SPO returns completed forms directly to CSWORA. Notify CSWORA of all subrecipients/consultants as early as possible.',
     type: 'yesno'
   },
   {
@@ -375,7 +387,7 @@ function ob(o) {
 // ── Timeline block ─────────────────────────────────────────────────────────────
 function buildTimeline(sponsorDate, track) {
   const m = calcMilestones(sponsorDate);
-  const use10 = track === '10-Day Track (recommended)';
+  const use10 = track === '10-Day Track (strongly recommended)';
   const activeDate = use10 ? m.d10 : m.d5;
 
   const milestones = [
@@ -385,10 +397,11 @@ function buildTimeline(sponsorDate, track) {
       track: '0', date: null, badge: 'As soon as possible'
     },
     {
-      label: 'Subrecipient & consultant docs to CSWORA',
-      note: use10 ? '10-business-day target' : '5-business-day requirement',
-      track: use10 ? '10' : '5',
-      date: use10 ? m.d10 : m.d5
+      label: 'CSWORA sends commitment forms to subrecipients & consultants',
+      note: 'CSWORA sends standard DRA commitment forms (subrecipient commitment form and/or consultant commitment form) as early as possible — ideally at least 3 weeks before the deadline. Sub/consultant\'s institution SPO returns completed forms to CSWORA.',
+      track: '0',
+      date: null,
+      badge: 'Ideally 3+ weeks before deadline'
     },
     {
       label: 'All non-technical docs to CSWORA',
@@ -403,6 +416,13 @@ function buildTimeline(sponsorDate, track) {
       date: use10 ? m.d10 : m.d5
     },
     {
+      label: 'Cayuse routing initiated — draft budget, justification & SOW ready',
+      note: 'Cayuse can be routed as soon as a draft budget, draft budget justification, and draft scope of work are ready — ideally at the 10-day target. Routes through Doug Coatsworth (Associate Dean for Research) and Tiffany Harmon (Assistant Dean of Finance). Documents can still be revised up to the 5-day hard deadline.',
+      track: use10 ? '10' : '5',
+      date: use10 ? m.d10 : m.d5,
+      badge: 'Route early — revisions still allowed'
+    },
+    {
       label: 'FINAL technical docs to CSWORA by 8:00 AM',
       note: 'Email FINAL Specific Aims, Research Strategy & Bibliography to CSWORA by 8AM — allows time for PDF conversion and portal upload before the DRA deadline.',
       track: '5',
@@ -411,14 +431,14 @@ function buildTimeline(sponsorDate, track) {
     },
     {
       label: '⚠  DRA 5-Day Hard Deadline — Cayuse fully approved',
-      note: 'CSWORA manages all of Cayuse. CSWORA targets routing complete by 5PM the day before so Tiffany Harmon and Amanda Harvey-Panfil can review. After this date: no PI-initiated changes to any document.',
+      note: 'CSWORA manages all of Cayuse. Routing goes through Doug Coatsworth (Associate Dean for Research) and Tiffany Harmon (Assistant Dean of Finance). CSWORA targets routing complete by 5PM the day before the deadline so Doug and Tiffany can review and authorize before it moves to DRA. After this date: no PI-initiated changes to any document.',
       track: '5',
       date: m.d5,
       badge: 'Hard deadline'
     },
     {
       label: 'DRA review feedback provided (~2 days)',
-      note: 'A DRA coordinator contacts PI, CSWORA & Tiffany with their specific review timeline.',
+      note: 'A DRA coordinator contacts PI, CSWORA & Doug Coatsworth with their specific review timeline — including the final document deadline and submission confirmation process.',
       track: '2',
       date: null,
       badge: '~2 business days after DRA deadline'
@@ -481,7 +501,7 @@ function buildTimeline(sponsorDate, track) {
 // ── Document list builder ─────────────────────────────────────────────────────
 function buildDocs(sponsorDate, track) {
   const a = answers;
-  const use10  = track === '10-Day Track (recommended)';
+  const use10  = track === '10-Day Track (strongly recommended)';
   const m      = sponsorDate ? calcMilestones(sponsorDate) : null;
   const mech   = a.mechanism || 'R01';
   const pl     = {R01:12,R21:6,R03:6,R34:15,'R61/R33':12,Other:12}[mech]||12;
@@ -519,8 +539,8 @@ function buildDocs(sponsorDate, track) {
         { name:'R&R Other Project Information', owner:'cswora', req:true, due:'dra5', detail:'CSWORA completes yes/no compliance questions. PI documents are uploaded here.' },
         { name:'Project/Performance Site Locations', owner:'cswora', req:true, due:'dra5', detail:'UTK and all off-campus/community sites.' },
         { name:'R&R Senior/Key Person Profile', owner:'cswora', req:true, due:'dra5', detail:'Every named person needs a valid eRA Commons ID.' },
-        { name: over500 ? 'R&R Detailed Budget' : 'R&R Modular Budget', owner:'cswora', req:true, due:'nontechnical', detail: over500 ? 'Required — direct costs exceed $500K/yr. CSWORA builds with PI input.' : 'Modular budget (≤$249K direct costs/yr). CSWORA builds; PI reviews and approves.' },
-        { name:'Budget Justification', owner:'cswora', req:true, due:'nontechnical', detail:'CSWORA drafts; PI reviews and approves.' },
+        { name: over500 ? 'R&R Detailed Budget' : 'R&R Modular Budget', owner:'cswora', req:true, due:'nontechnical', detail: over500 ? 'Required — direct costs exceed $500K/yr. CSWORA builds with PI input and approval. A draft budget and draft budget justification — along with a draft scope of work — are needed to initiate Cayuse routing, ideally by the 10-day target.' : 'Modular budget (≤$249K direct costs/yr). CSWORA builds; PI reviews and approves. A draft budget and draft budget justification — along with a draft scope of work — are needed to initiate Cayuse routing, ideally by the 10-day target.' },
+        { name:'Budget Justification', owner:'cswora', req:true, due:'nontechnical', detail:'CSWORA drafts narrative justification for all budget line items. PI must review and approve. A draft budget justification is needed to initiate Cayuse routing — aim to have it ready by the 10-day target.' },
         { name:'Personnel Justification', owner:'both', req:!over500, na:over500, naNote:'Not required — detailed budgets include full justification', due:'nontechnical', detail:'Required for modular budgets. PI provides role descriptions; CSWORA drafts.' }
       ]
     },
@@ -555,7 +575,7 @@ function buildDocs(sponsorDate, track) {
         { name:'Data Management & Sharing Plan (2-page max)', owner:'pi', req:true, due:'nontechnical', detail:'Required for ALL NIH applications. Not reviewed for scientific merit. Covers data types, standards, preservation, access, sharing timeline, and oversight.' },
         { name:'Letters of Support', owner:'pi', req:true, due:'nontechnical', detail:'Official letterhead, signed. Collaborators, community partners, organizations providing data/participant access.' },
         { name:'Multiple PD/PI Leadership Plan', owner:'pi', req:isMultiPI, na:!isMultiPI, naNote:'Not required — single PI', due:'nontechnical', detail:'Governance, roles, decision-making, conflict resolution between PIs.' },
-        { name:'Consortium / Contractual Arrangements', owner:'both', req:hasSubs, na:!hasSubs, naNote:'Not required — no subrecipients', due:'nontechnical', detail:'Nature and justification of each subrecipient relationship. Sub SPO must submit docs to CSWORA.' }
+        { name:'Consortium / Contractual Arrangements', owner:'both', req:hasSubs, na:!hasSubs, naNote:'Not required — no subrecipients', due:'nontechnical', detail:'CSWORA sends standard DRA subrecipient commitment forms — ideally 3+ weeks before the deadline. Sub\'s SPO returns completed budget, SOW, and commitment forms to CSWORA. Documents must come from the institution\'s SPO, not the individual investigator.' }
       ]
     },
     {
@@ -594,6 +614,58 @@ function countDocs(secs) {
   let req=0, na=0;
   secs.forEach(s => s.items.forEach(i => { if(i.req) req++; else if(i.na) na++; }));
   return {req,na};
+}
+
+
+// ── Smartsheet Form Pre-fill ──────────────────────────────────────────────────
+// SETUP: Replace the URL below with your Smartsheet form URL
+// To get your form URL: open the intake sheet in Smartsheet →
+//   Forms → Manage Forms → click "Share form" → copy the link
+// Then replace YOUR_SMARTSHEET_FORM_URL_HERE with that link.
+const SMARTSHEET_FORM_URL = 'https://app.smartsheet.com/b/form/019a0d2f8c0a7e1c94d352d585fdbf69';
+
+function buildSmartsheetURL() {
+  const a = answers;
+  const sd = a.deadline ? new Date(a.deadline + 'T12:00:00') : null;
+  const track = (a.track || '').replace('strongly recommended','strongly recommended');
+  
+  // Build a summary of the wizard answers for the Notes field
+  const notes = [
+    a.mechanism       ? 'Mechanism: ' + a.mechanism            : '',
+    a.submission_type ? 'Type: ' + a.submission_type            : '',
+    a.direct_costs    ? 'Direct costs >$500K: ' + a.direct_costs : '',
+    a.human_subjects  ? 'Human subjects: ' + a.human_subjects   : '',
+    a.clinical_trial  ? 'Clinical trial: ' + a.clinical_trial   : '',
+    a.vertebrate_animals==='Yes' ? 'Vertebrate animals: Yes'    : '',
+    a.model_organisms==='Yes'    ? 'Model organisms: Yes'       : '',
+    a.genomic_data==='Yes'       ? 'Large-scale genomic data: Yes' : '',
+    a.multi_pi==='Yes'   ? 'Multiple PI: Yes'                   : '',
+    a.subrecipients==='Yes' ? 'Subrecipients: Yes'              : '',
+    a.select_agents==='Yes'  ? 'Select agents: Yes'             : '',
+    a.key_resources==='Yes'  ? 'Key biological resources: Yes'  : '',
+    a.foreign==='Yes'        ? 'Foreign component: Yes'         : '',
+  ].filter(Boolean).join(' | ');
+
+  // Smartsheet form pre-fill uses ?field[Field Name]=value syntax
+  // Field names must match EXACTLY the column names in your Smartsheet form
+  const params = new URLSearchParams();
+  if (sd) params.set('field[Sponsor Deadline]', a.deadline);          // DATE field
+  if (track) params.set('field[Deadline Track]', track);             // PICKLIST field
+  if (a.mechanism) params.set('field[Mechanism]', a.mechanism);      // TEXT field
+  if (a.human_subjects) params.set('field[Human Subjects?]', a.human_subjects); // PICKLIST
+  if (a.subrecipients) params.set('field[Subrecipients?]', a.subrecipients);    // PICKLIST
+  if (notes) params.set('field[Additional Notes from Wizard]', notes); // TEXT field
+
+  return SMARTSHEET_FORM_URL + '?' + params.toString();
+}
+
+function openSmartsheetForm() {
+  const url = buildSmartsheetURL();
+  if (url.includes('YOUR_SMARTSHEET_FORM_URL_HERE')) {
+    alert('Smartsheet form URL not yet configured.\n\nContact CSWORA at cswora@utk.edu to notify them of your proposal, or email the details directly.');
+    return;
+  }
+  window.open(url, '_blank');
 }
 
 // ── Render ─────────────────────────────────────────────────────────────────────
@@ -635,6 +707,16 @@ function render() {
           <button class="btn-action" onclick="window.print()">${svg(I.print)} Print</button>
           <button class="btn-action" onclick="restart()">${svg(I.refresh)} Start over</button>
         </div>
+      </div>
+      
+      <div class="submit-row">
+        <div class="submit-label">
+          <strong>Ready to notify CSWORA?</strong> Send your answers to the CSWORA Pre-Award intake sheet. CSWORA will follow up to schedule a kickoff meeting and begin outreach to any subrecipients or consultants.
+        </div>
+        <button class="btn-submit nih" onclick="openSmartsheetForm()">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.79a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16l.19.92z"/></svg>
+          Notify CSWORA
+        </button>
       </div>
       <div class="chips-row">${chips.map(c=>`<span class="chip ${c.active?'active':''}">${c.label}</span>`).join('')}</div>
       ${sponsorDate ? buildTimeline(sponsorDate, track) : ''}

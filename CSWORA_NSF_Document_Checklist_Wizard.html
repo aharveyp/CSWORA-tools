@@ -163,6 +163,18 @@
     .results-header { flex-direction: column; }
     .milestone-date-col { min-width: 100px; }
   }
+
+  /* Smartsheet submit button */
+  .btn-submit { display:flex; align-items:center; gap:7px; padding:10px 20px; font-size:13px; font-family:inherit; font-weight:600; border-radius:8px; border:none; color:white; cursor:pointer; transition:all .15s; text-decoration:none; }
+  .btn-submit.nih { background: var(--orange); }
+  .btn-submit.nih:hover { background: var(--orange-dark); }
+  .btn-submit.nsf { background: var(--nsf); }
+  .btn-submit.nsf:hover { background: var(--nsf-dark); }
+  .btn-submit svg { width:14px; height:14px; stroke:white; fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+  .submit-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:20px; padding:16px 20px; background:var(--white); border:1px solid var(--gray-border); border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,.07); }
+  .submit-label { font-size:13px; color:var(--gray); flex:1; min-width:200px; }
+  .submit-label strong { color:var(--gray-dark); }
+
 </style>
 </head>
 <body>
@@ -236,7 +248,7 @@ const QUESTIONS = [
     text:'What is the NSF sponsor submission deadline?',
     hint:'The deadline listed in the NSF solicitation or Research.gov. All internal CSWORA and DRA milestones will be calculated from this date.' },
   { id:'track', section:'Proposal basics', type:'choice',
-    options:['10-Day Track (recommended)','5-Day Track (hard minimum)'],
+    options:['10-Day Track (strongly recommended)','5-Day Track (hard minimum)'],
     text:'Which internal deadline track will you use?',
     hint:'The 10-day track gives CSWORA and DRA more time to review. The 5-day track is the hard minimum per UT DRA policy.' },
   { id:'proposal_type', section:'Proposal basics', type:'choice',
@@ -325,12 +337,15 @@ function buildTimeline(sd, track) {
 
   const milestones = [
     { label:'Notify CSWORA — contact as soon as possible', note:'Ideally 8+ weeks before the deadline. Contact cswora@utk.edu immediately.', t:'0', date:null, badge:'As soon as possible' },
-    { label:'Subrecipient & subaward docs to CSWORA', note:'Subaward SOW, budget, budget justification, and personnel docs from each subaward institution SPO.', t:use10?'10':'5', date:use10?m.d10:m.d5 },
+    { label:'CSWORA sends commitment & subaward forms to subrecipients/consultants', note:'CSWORA sends standard DRA commitment forms (subrecipient commitment form and/or consultant commitment form) as early as possible — ideally at least 3 weeks before the deadline. Sub\'s institution SPO returns completed forms, SOW, budget, and personnel docs to CSWORA.', t:'0', date:null, badge:'Ideally 3+ weeks before deadline' },
     { label:'All non-technical docs to CSWORA', note:'Biosketches (SciENcv), Current & Pending (SciENcv), COA forms, Facilities, Budget Justification, letters of collaboration, DMS Plan.', t:use10?'10':'5', date:use10?m.d10:m.d5 },
     { label:'Draft Project Description to CSWORA', note:'CSWORA reviews for formatting compliance (page limits, font, margins, no URLs in body text).', t:use10?'10':'5', date:use10?m.d10:m.d5 },
+    { label:'Cayuse routing initiated — draft budget, justification & SOW ready',
+      note:'Cayuse can be routed as soon as a draft budget, draft budget justification, and draft scope of work are ready — ideally at the 10-day target. Routes through Doug Coatsworth (Associate Dean for Research) and Tiffany Harmon (Assistant Dean of Finance). Documents can still be revised up to the 5-day hard deadline.',
+      t:use10?'10':'5', date:use10?m.d10:m.d5, badge:'Route early — revisions still allowed' },
     { label:'FINAL Project Description to CSWORA by 8:00 AM', note:'Email final Project Description, Project Summary, and References Cited to CSWORA by 8AM for PDF conversion and upload.', t:'5', date:m.dFin, badge:'8:00 AM' },
-    { label:'⚠  DRA 5-Day Hard Deadline — fully approved', note:'CSWORA manages all of Cayuse. All documents final. No PI-initiated changes after this date.', t:'5', date:m.d5, badge:'Hard deadline' },
-    { label:'DRA review feedback (~2 business days)', note:'DRA coordinator contacts PI, CSWORA & Tiffany Harmon with their review timeline.', t:'2', date:null, badge:'~2 business days after DRA deadline' },
+    { label:'⚠  DRA 5-Day Hard Deadline — fully approved', note:'CSWORA manages all of Cayuse. Routing goes through Doug Coatsworth (Associate Dean for Research) and Tiffany Harmon (Assistant Dean of Finance). CSWORA targets routing complete by 5PM the day before so Doug and Tiffany can review and authorize before it moves to DRA. No PI-initiated changes after this date.', t:'5', date:m.d5, badge:'Hard deadline' },
+    { label:'DRA review feedback (~2 business days)', note:'A DRA coordinator contacts PI, CSWORA & Doug Coatsworth with their specific review timeline — including the final document deadline and submission confirmation process.', t:'2', date:null, badge:'~2 business days after DRA deadline' },
     { label:'Final DRA-requested revisions due', note:'Any revisions DRA requests must be returned by this date.', t:'2', date:m.d2 },
     { label:'🏁  NSF Submission Deadline — DRA submits', note:'DRA submits via Research.gov by 5:00 PM local time. Be available by phone and email.', t:'0', date:m.sponsor, badge:'5:00 PM local' }
   ];
@@ -407,8 +422,8 @@ function buildDocs(sd, track) {
       items:[
         { name:'NSF Cover Sheet', owner:'cswora', req:true, due:'dra5', detail:'CSWORA completes. Proposal type, title, program, PI info, performance dates, and all compliance checkboxes (human subjects, animals, hazardous materials, international, off-campus). Any unchecked boxes are treated as "No."' },
         { name:'Proposal Budget (all years)', owner:'cswora', req:true, due:'nontechnical', detail:'One budget per year. CSWORA builds with PI input. Max 2 months/yr salary per senior person from any single NSF award.' + (over2mo?' ⚠ Compensation exceeding 2 months must be disclosed and justified in the Budget Justification.':'') },
-        { name:'Budget Justification (max 5 pages)', owner:'cswora', req:true, due:'nontechnical', detail:'Every line item must be documented and justified. Max 5 pages per organization. CSWORA drafts; PI reviews and approves.' },
-        { name:'Subaward budget & budget justification', owner:'cswora', req:hasSub, na:!hasSub, naNote:'Not required — no subawards', due:'nontechnical', detail:'Each subaward needs its own budget and 5-page budget justification. CSWORA coordinates with subaward institution SPOs.' },
+        { name:'Budget Justification (max 5 pages)', owner:'cswora', req:true, due:'nontechnical', detail:'Every line item must be documented and justified. Max 5 pages per organization. CSWORA drafts; PI reviews and approves. A draft budget and draft budget justification — along with a draft scope of work — are needed to initiate Cayuse routing. Aim to have these ready by the 10-day target so routing can begin early.' },
+        { name:'Subaward budget & budget justification', owner:'cswora', req:hasSub, na:!hasSub, naNote:'Not required — no subawards', due:'nontechnical', detail:'CSWORA sends standard DRA subaward commitment forms — ideally 3+ weeks before the deadline. Each subaward also needs its own budget and 5-page budget justification returned by the sub\'s institution SPO. Documents must come from the SPO, not the individual investigator.' },
         { name:'Non-lead collaborative proposal submission', owner:'cswora', req:isSimult&&isNonLead, na:!(isSimult&&isNonLead), naNote:isSimult?'Only required if UTK is non-lead':'Not applicable', due:'dra5', detail:'Generate temporary proposal ID in Research.gov and provide to the lead organization for linking before submission.' }
       ]
     },
@@ -478,6 +493,58 @@ function countDocs(secs) {
   return {req,na};
 }
 
+
+// ── Smartsheet Form Pre-fill ──────────────────────────────────────────────────
+// SETUP: Replace the URL below with your Smartsheet form URL
+// To get your form URL: open the intake sheet in Smartsheet →
+//   Forms → Manage Forms → click "Share form" → copy the link
+// Then replace YOUR_SMARTSHEET_FORM_URL_HERE with that link.
+const SMARTSHEET_FORM_URL = 'https://app.smartsheet.com/b/form/019a0d2f8c0a7e1c94d352d585fdbf69';
+
+function buildSmartsheetURL() {
+  const a = answers;
+  const sd = a.deadline ? new Date(a.deadline + 'T12:00:00') : null;
+  const track = (a.track || '').replace('strongly recommended','strongly recommended');
+  
+  // Build a summary of the wizard answers for the Notes field
+  const notes = [
+    a.mechanism       ? 'Mechanism: ' + a.mechanism            : '',
+    a.submission_type ? 'Type: ' + a.submission_type            : '',
+    a.direct_costs    ? 'Direct costs >$500K: ' + a.direct_costs : '',
+    a.human_subjects  ? 'Human subjects: ' + a.human_subjects   : '',
+    a.clinical_trial  ? 'Clinical trial: ' + a.clinical_trial   : '',
+    a.vertebrate_animals==='Yes' ? 'Vertebrate animals: Yes'    : '',
+    a.model_organisms==='Yes'    ? 'Model organisms: Yes'       : '',
+    a.genomic_data==='Yes'       ? 'Large-scale genomic data: Yes' : '',
+    a.multi_pi==='Yes'   ? 'Multiple PI: Yes'                   : '',
+    a.subrecipients==='Yes' ? 'Subrecipients: Yes'              : '',
+    a.select_agents==='Yes'  ? 'Select agents: Yes'             : '',
+    a.key_resources==='Yes'  ? 'Key biological resources: Yes'  : '',
+    a.foreign==='Yes'        ? 'Foreign component: Yes'         : '',
+  ].filter(Boolean).join(' | ');
+
+  // Smartsheet form pre-fill uses ?field[Field Name]=value syntax
+  // Field names must match EXACTLY the column names in your Smartsheet form
+  const params = new URLSearchParams();
+  if (sd) params.set('field[Sponsor Deadline]', a.deadline);          // DATE field
+  if (track) params.set('field[Deadline Track]', track);             // PICKLIST field
+  if (a.mechanism) params.set('field[Mechanism]', a.mechanism);      // TEXT field
+  if (a.human_subjects) params.set('field[Human Subjects?]', a.human_subjects); // PICKLIST
+  if (a.subrecipients) params.set('field[Subrecipients?]', a.subrecipients);    // PICKLIST
+  if (notes) params.set('field[Additional Notes from Wizard]', notes); // TEXT field
+
+  return SMARTSHEET_FORM_URL + '?' + params.toString();
+}
+
+function openSmartsheetForm() {
+  const url = buildSmartsheetURL();
+  if (url.includes('YOUR_SMARTSHEET_FORM_URL_HERE')) {
+    alert('Smartsheet form URL not yet configured.\n\nContact CSWORA at cswora@utk.edu to notify them of your proposal, or email the details directly.');
+    return;
+  }
+  window.open(url, '_blank');
+}
+
 // ── Render ─────────────────────────────────────────────────────────────────────
 function render() {
   const root = document.getElementById('root');
@@ -524,6 +591,16 @@ function render() {
           <button class="btn-action" onclick="restart()">${svg(I.refresh)} Start over</button>
         </div>
       </div>
+      
+      <div class="submit-row">
+        <div class="submit-label">
+          <strong>Ready to notify CSWORA?</strong> Send your answers to the CSWORA Pre-Award intake sheet. CSWORA will follow up to schedule a kickoff meeting and begin outreach to any subrecipients or consultants.
+        </div>
+        <button class="btn-submit nsf" onclick="openSmartsheetForm()">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.79a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16l.19.92z"/></svg>
+          Notify CSWORA
+        </button>
+      </div>
       <div class="chips-row">${chips.map(c=>`<span class="chip ${c.active?'active':''}">${c.label}</span>`).join('')}</div>
       ${warns.map(w=>`<div class="warn-box">${w}</div>`).join('')}
       ${sd ? buildTimeline(sd, track) : ''}
@@ -567,7 +644,7 @@ function render() {
         }).join('')}
       </div>
       <div class="callout-box">
-        <strong>Important NSF reminders:</strong> Letters of support are NOT permitted — only letters of collaboration in the NSF standard format. Voluntary committed cost sharing is prohibited. Always check your specific solicitation — it may add requirements beyond PAPPG. Contact <a href="mailto:cswora@utk.edu">cswora@utk.edu</a> with questions or DRA at <a href="mailto:proposals@utk.edu">proposals@utk.edu</a>. For Research.gov help: NSF Help Desk <strong>1-800-381-1532</strong> or <a href="mailto:rgov@nsf.gov">rgov@nsf.gov</a>.
+        <strong>Important NSF reminders:</strong> Letters of support are NOT permitted — only letters of collaboration in the NSF standard format. Voluntary committed cost sharing is prohibited. Always check your specific solicitation. College routing goes through <strong>Doug Coatsworth</strong> (Associate Dean for Research, <a href="mailto:jcoatswo@utk.edu">jcoatswo@utk.edu</a>) and <strong>Tiffany Harmon</strong> (Assistant Dean of Finance). Contact <a href="mailto:cswora@utk.edu">cswora@utk.edu</a> with questions or DRA at <a href="mailto:proposals@utk.edu">proposals@utk.edu</a>. NSF Help Desk: <strong>1-800-381-1532</strong> or <a href="mailto:rgov@nsf.gov">rgov@nsf.gov</a>.
       </div>`;
     return;
   }
